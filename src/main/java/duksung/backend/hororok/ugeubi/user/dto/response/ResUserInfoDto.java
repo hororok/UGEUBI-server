@@ -6,14 +6,14 @@ import lombok.Getter;
 @Getter
 public class ResUserInfoDto {
 
+    private String userId;
     private String userName;
     private String email;
-    private String phoneNumber;
 
     @Builder
-    public ResUserInfoDto(String userName, String email, String phoneNumber){
+    public ResUserInfoDto(String userId, String userName, String email){
+        this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 }

@@ -19,19 +19,19 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column(unique = true)
+    private String userId;
+
     private String email;
 
     private String password;
 
-    private String phoneNumber;
-
     private String userName;
 
     @Builder
-    private User(String email, String password, String phoneNumber, String userName){
+    private User(String userId, String email, String password, String userName){
+        this.userId=userId;
         this.email=email;
         this.password=password;
-        this.phoneNumber=phoneNumber;
         this.userName=userName;
     }
 

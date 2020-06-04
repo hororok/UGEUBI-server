@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReqSignInDto {
+
     @NotNull
-    private String email;
+    private String userId;
 
     @NotNull
     private String password;

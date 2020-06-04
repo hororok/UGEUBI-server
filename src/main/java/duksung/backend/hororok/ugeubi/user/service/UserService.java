@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public ResUserInfoDto signIn(ReqSignInDto reqSignInDto){
-        User user = userRepository.findByEmail(reqSignInDto.getEmail())
+        User user = userRepository.findByUserId(reqSignInDto.getUserId())
                 .orElseThrow(NoResultException::new);
 
         if(user.isNotEqualToPassword(reqSignInDto.getPassword())){
@@ -26,8 +26,8 @@ public class UserService {
 
         return ResUserInfoDto.builder()
                 .userName(user.getUserName())
+                .userId(user.getUserId())
                 .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 }
