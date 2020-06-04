@@ -37,6 +37,7 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("org.hibernate:hibernate-core:5.4.6.Final")
+    implementation 'org.mindrot:jbcrypt:0.4' //password 암호화
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
