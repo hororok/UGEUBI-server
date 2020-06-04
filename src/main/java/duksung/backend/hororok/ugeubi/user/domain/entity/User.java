@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @Entity
 public class User extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,4 +37,5 @@ public class User extends BaseTimeEntity {
 
     public void modifyPassword(String password){ this.password= BCrypt.hashpw(password,BCrypt.gensalt()); }
     public boolean isNotEqualToPassword(String password){ return BCrypt.checkpw(password, this.password); }
+
 }
