@@ -24,14 +24,14 @@ public class User extends BaseTimeEntity {
 
     private String phoneNumber;
 
-    private String username;
+    private String userName;
 
     @Builder
-    private User(String email, String password, String phoneNumber, String username){
+    private User(String email, String password, String phoneNumber, String userName){
         this.email=email;
         this.password=password;
         this.phoneNumber=phoneNumber;
-        this.username=username;
+        this.userName=userName;
     }
 
     public void modifyPassword(String password){ this.password= BCrypt.hashpw(password,BCrypt.gensalt()); }
