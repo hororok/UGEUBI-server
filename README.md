@@ -1,7 +1,9 @@
-# 우리집 구급상자 UGEUBI
+# 우리집 구급상자 UGEUBI 🚑
 
 - Backend
-    - Springboot
+    - Springboot Framework
+
+- Swagger Doc
     
 - 팀원
     - 정인정
