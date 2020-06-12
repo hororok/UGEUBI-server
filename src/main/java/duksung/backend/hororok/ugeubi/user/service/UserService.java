@@ -4,10 +4,12 @@ import duksung.backend.hororok.ugeubi.config.auth.JwtProvider;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResTokenDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -23,7 +25,7 @@ public class UserService {
         User user = userRepository.findByUserId(reqSignInDto.getUserId())
                 .orElseThrow(NoResultException::new);
 
-        if(user.isNotEqualToPassword(reqSignInDto.getPassword())){
+        if(user.isNotEqualToPassword(BCrypt.hashpw(reqSignInDto.getPassword(), BCrypt.gensalt()))){
             throw new IllegalArgumentException("비밀번호가 일치하지 않음");
         }
 
@@ -34,6 +36,17 @@ public class UserService {
                 .tokens(resTokenDto)
                 .user(resUserDto)
                 .build();
+    }
+
+    public void signUp(ReqSignUpDto reqSignUpDto){
+
+        boolean isExistUserId = userRepository.existsByUserId(reqSignUpDto.getUserId());
+        if(isExistUserId){
+            throw new IllegalArgumentException("중복되는 아이디");
+        }
+
+        userRepository.save(reqSignUpDto.toEntity());
+
     }
 
     private ResTokenDto createTokens(User user){

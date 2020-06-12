@@ -1,6 +1,7 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
 import duksung.backend.hororok.ugeubi.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,4 +28,16 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.signIn(reqSingInDto));
     }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<Void> signUp(@RequestBody @Valid ReqSignUpDto reqSignUpDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.signUp(reqSignUpDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
