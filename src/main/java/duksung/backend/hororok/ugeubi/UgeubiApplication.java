@@ -26,13 +26,13 @@ public class UgeubiApplication {
     /**한글깨짐 문제 해결을 위한 Bean추가**/
     @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
-        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        return new StringHttpMessageConverter(Charset.forName("euc-kr"));
     }
 
     @Bean
     public CharacterEncodingFilter characterEncodingFilter()  {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setEncoding("euc-kr");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
     }
