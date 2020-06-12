@@ -6,14 +6,12 @@ import lombok.Getter;
 @Getter
 public class ResUserInfoDto {
 
-    private String userId;
-    private String userName;
-    private String email;
+    private ResTokenDto tokens;
+    private ResUserDto user;
 
     @Builder
-    public ResUserInfoDto(String userId, String userName, String email){
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
+    public ResUserInfoDto(ResTokenDto tokens, ResUserDto user){
+        this.tokens = tokens;
+        this.user = user;
     }
 }

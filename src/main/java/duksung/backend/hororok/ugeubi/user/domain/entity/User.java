@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity {
     private User(String userId, String email, String password, String userName){
         this.userId=userId;
         this.email=email;
-        this.password=password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.userName=userName;
     }
 
