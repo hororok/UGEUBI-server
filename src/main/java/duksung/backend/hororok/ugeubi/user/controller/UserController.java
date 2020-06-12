@@ -37,7 +37,7 @@ public class UserController {
 
         userService.signUp(reqSignUpDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
