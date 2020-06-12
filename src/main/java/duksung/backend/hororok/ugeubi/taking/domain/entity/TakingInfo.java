@@ -1,4 +1,4 @@
-package duksung.backend.hororok.ugeubi.medicine.domain.entity;
+package duksung.backend.hororok.ugeubi.taking.domain.entity;
 
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
 import lombok.Builder;
@@ -25,10 +25,9 @@ public class TakingInfo extends BaseTimeEntity {
     @Temporal(TemporalType.TIME)
     private Date taking_time; //복용시간
 
-    @Temporal(TemporalType.TIME)
     private String taking_day; //복용 요일
 
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.DATE)
     private Date taking_period; //복용 기간
 
     private int taking_number; //복용 개수
