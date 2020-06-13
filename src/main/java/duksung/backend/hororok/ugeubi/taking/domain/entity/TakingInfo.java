@@ -35,8 +35,9 @@ public class TakingInfo extends BaseTimeEntity {
     private boolean is_taken;
 
     @Builder
-    private TakingInfo(Long medicine_id, String medicine_name, Date taking_time,String taking_day,
+    private TakingInfo(Long user_id, Long medicine_id, String medicine_name, Date taking_time,String taking_day,
                        Date taking_period, int taking_number, boolean is_taken){
+        this.user_id = user_id;
         this.medicine_id = medicine_id;
         this.medicine_name = medicine_name;
         this.taking_time = taking_time;
