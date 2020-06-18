@@ -40,8 +40,7 @@ dependencies {
     implementation("org.hibernate:hibernate-core:5.4.6.Final")
     implementation 'org.mindrot:jbcrypt:0.4' //password 암호화
     implementation 'io.jsonwebtoken:jjwt-api:0.10.7' //jwt
-    runtime 'io.jsonwebtoken:jjwt-impl:0.10.7'
-    runtime 'io.jsonwebtoken:jjwt-jackson:0.10.7'
+
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
@@ -49,6 +48,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.10.7' //jwt
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.10.7'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

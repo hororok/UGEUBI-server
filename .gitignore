@@ -138,3 +138,6 @@ gradle-app.setting
 
 ### oAuth
 application-oauth.properties
+
+###email
+application-email.properties
