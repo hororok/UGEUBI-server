@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: local # 기본 환경 선택
+
+---
+
+spring:
+  profiles: local
+  #datasource:
+  #  platform: h2
+  #  hikari:
+  #    jdbc-url: jdbc:h2:tcp://localhost:9092/mem:testdb;MVCC=TRUE
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
+  redis:
+    host: localhost
+    port: 6379
+
+  jpa:
+    database-platform: H2
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  h2:
+    console:
+      enabled: true
+
+secret.key: 테스트용 키 입니다
+spring.profiles.include: email
