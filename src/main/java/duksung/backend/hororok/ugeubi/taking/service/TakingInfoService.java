@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class TakingService {
+public class TakingInfoService {
 
     private final TakingInfoRepository takingInfoRepository;
 

@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.medicine.controller;
 
+import duksung.backend.hororok.ugeubi.medicine.dto.MedicineDURRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.XML;
@@ -9,24 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/medicines", produces = "text/plain;charset=UTF-8")
+@RequestMapping(value = "/medicine", produces = "text/plain;charset=UTF-8")
 public class MedicineController {
 
     private  static String DURPrdlstInfoServiceKey = "P9uW81CUZfBBczChK71KSYj%2FQqbwLfIKKPjaAHarPSUAp7Irn17Q0zF9d4zLDFfCcm7pGFZQtBvdrHOnqhCaJQ%3D%3D";
 
     //[병용금기] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getUsjntTabooInfoList")
-    public String getUsjntTabooInfoList(HttpServletRequest request)throws IOException {
+    public String getUsjntTabooInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getUsjntTabooInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -36,7 +36,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -72,10 +72,10 @@ public class MedicineController {
 
     //[특정연령대금기] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getSpcifyAgrdeTabooInfoList")
-    public String getSpcifyAgrdeTabooInfoList(HttpServletRequest request)throws IOException {
+    public String getSpcifyAgrdeTabooInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getSpcifyAgrdeTabooInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -85,7 +85,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -120,10 +120,10 @@ public class MedicineController {
 
     //[임부금기] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getPwnmTabooInfoList")
-    public String getPwnmTabooInfoList(HttpServletRequest request)throws IOException {
+    public String getPwnmTabooInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getPwnmTabooInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -133,7 +133,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -169,10 +169,10 @@ public class MedicineController {
 
     //[용량주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getCpctyAtentInfoList")
-    public String getCpctyAtentInfoList(HttpServletRequest request)throws IOException {
+    public String getCpctyAtentInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getCpctyAtentInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -182,7 +182,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -217,10 +217,10 @@ public class MedicineController {
 
     //[투여기간주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getMdctnPdAtentInfoList")
-    public String getMdctnPdAtentInfoList(HttpServletRequest request)throws IOException {
+    public String getMdctnPdAtentInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getMdctnPdAtentInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -230,7 +230,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -265,10 +265,10 @@ public class MedicineController {
 
     //[노인주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getOdsnAtentInfoList")
-    public String getOdsnAtentInfoList(HttpServletRequest request)throws IOException {
+    public String getOdsnAtentInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getOdsnAtentInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -278,7 +278,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -313,10 +313,10 @@ public class MedicineController {
 
     //[효능군중복] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getEfcyDplctInfoList")
-    public String getEfcyDplctInfoList(HttpServletRequest request)throws IOException {
+    public String getEfcyDplctInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getEfcyDplctInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -326,7 +326,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -361,10 +361,10 @@ public class MedicineController {
 
     //[서방형 제제 분할주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getSeobangjeongPartitnAtentInfoList")
-    public String getSeobangjeongPartitnAtentInfoList(HttpServletRequest request)throws IOException {
+    public String getSeobangjeongPartitnAtentInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getSeobangjeongPartitnAtentInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -374,7 +374,7 @@ public class MedicineController {
             urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -409,10 +409,10 @@ public class MedicineController {
 
     //[DUR품목정보 조회] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getDurPrdlstInfoList")
-    public String getDurPrdlstInfoList(HttpServletRequest request)throws IOException {
+    public String getDurPrdlstInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
 
-        String itemName = request.getParameter("itemName");
-        String pageNo = request.getParameter("pageNo");
+        String itemName = requestDTO.getItemName();
+        Long pageNo = requestDTO.getPageNo();
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1470000/DURPrdlstInfoService/getDurPrdlstInfoList");
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + DURPrdlstInfoServiceKey); /*Service Key*/
@@ -421,7 +421,7 @@ public class MedicineController {
        urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(itemName, "UTF-8"));/*품목명*/
 
         if(pageNo != null)
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo.toString(), "UTF-8")); /*페이지 번호*/
 
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
