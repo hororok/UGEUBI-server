@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @Getter
-@RedisHash(value = "sign_up_number", timeToLive = 60L)
+@RedisHash(value = "sign_up_number", timeToLive = 300L)
 public class SignUpNumber implements Serializable {
     @Id
     private String id;

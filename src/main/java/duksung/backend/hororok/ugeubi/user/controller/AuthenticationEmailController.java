@@ -1,8 +1,10 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.service.AuthenticationEmailService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,4 +33,15 @@ public class AuthenticationEmailController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/authentication/sign-up")
+    public ResponseEntity<Void> verifyEmailSignUpNumber(@RequestBody @Valid ReqVerifySignUpNumberDto reqVerifySignUpNumberDto,
+                                                        BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        authenticationEmailService.verifyEmailSignUpNumber(reqVerifySignUpNumberDto);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

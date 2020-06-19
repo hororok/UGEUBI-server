@@ -6,6 +6,7 @@ import duksung.backend.hororok.ugeubi.user.domain.entity.SignUpNumber;
 import duksung.backend.hororok.ugeubi.user.domain.repository.SignUpNumberRepository;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,17 @@ public class AuthenticationEmailService {
                 MailForm.SIGN_UP.getContent()+number);
 
         saveAuthenticationNumberAtRedis(reqEmailSignUpNumberDto.getEmail(), number);
+    }
+
+    public void verifyEmailSignUpNumber(ReqVerifySignUpNumberDto reqVerifySignUpNumberDto) {
+        SignUpNumber signUpNumber = signUpNumberRepository.findById(reqVerifySignUpNumberDto.getEmail())
+                .orElseThrow(()->new IllegalArgumentException("인증번호의 만료시간이 지났거나 인증번호를 보낸 이메일이 아닙니다."));
+
+        if(!signUpNumber.getAuthenticateNumber().equals(reqVerifySignUpNumberDto.getAuthenticateNumber())){
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
+
+        signUpNumberRepository.delete(signUpNumber);
     }
 
     private String createAuthenticationEmailNumber(){
