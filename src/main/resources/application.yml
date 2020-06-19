@@ -32,5 +32,9 @@ spring:
     console:
       enabled: true
 
+  logging:
+    level:
+      root: trace
+
 secret.key: 테스트용 키 입니다
 spring.profiles.include: email
