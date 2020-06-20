@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.user.service;
 
+import duksung.backend.hororok.ugeubi.common.util.MailForm;
 import duksung.backend.hororok.ugeubi.config.auth.JwtProvider;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
@@ -21,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final JavaMailSenderService javaMailSenderService;
 
     public ResUserInfoDto signIn(ReqSignInDto reqSignInDto){
         User user = userRepository.findByUserId(reqSignInDto.getUserId())
@@ -57,6 +59,14 @@ public class UserService {
         return ResCheckUserIdDto.builder()
                 .userId(userId)
                 .available(!isExistUserId).build();
+    }
+
+    public void findForgottenUserId(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
+
+        javaMailSenderService.sendEmail(user.getEmail(), MailForm.FIND_USER_ID.getSubject(),
+                MailForm.FIND_USER_ID.getContent() + user.getUserId());
     }
 
     private ResTokenDto createTokens(User user){

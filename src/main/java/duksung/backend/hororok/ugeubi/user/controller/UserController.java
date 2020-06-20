@@ -42,12 +42,23 @@ public class UserController {
     }
 
     @GetMapping("/users/check-id")
-    public ResponseEntity<ResCheckUserIdDto> checkUserIdDuplication(@RequestParam String userId){
+    public ResponseEntity<ResCheckUserIdDto> checkUserIdDuplication(@RequestParam("userId") String userId){
         if(userId == null){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.checkUserIdDuplication(userId));
+    }
+
+    @GetMapping("/users/find-id")
+    public ResponseEntity<Void> findForgottenUserId(@RequestParam("email") String email){
+        if(email == null){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.findForgottenUserId(email);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
