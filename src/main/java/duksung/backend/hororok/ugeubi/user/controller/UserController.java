@@ -1,7 +1,9 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
+import com.sun.net.httpserver.HttpsConfigurator;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
+import duksung.backend.hororok.ugeubi.user.dto.response.ResCheckUserIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
 import duksung.backend.hororok.ugeubi.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +17,11 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/sign-in")
+    @PostMapping("/users/sign-in")
     public ResponseEntity<ResUserInfoDto> signIn(@RequestBody @Valid ReqSignInDto reqSingInDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
@@ -29,7 +30,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.signIn(reqSingInDto));
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/users/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Valid ReqSignUpDto reqSignUpDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
@@ -38,6 +39,15 @@ public class UserController {
         userService.signUp(reqSignUpDto);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/users/check-id")
+    public ResponseEntity<ResCheckUserIdDto> checkUserIdDuplication(@RequestParam String userId){
+        if(userId == null){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.checkUserIdDuplication(userId));
     }
 
 }

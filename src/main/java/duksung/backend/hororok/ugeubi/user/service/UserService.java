@@ -5,6 +5,7 @@ import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
+import duksung.backend.hororok.ugeubi.user.dto.response.ResCheckUserIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResTokenDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
@@ -47,6 +48,15 @@ public class UserService {
 
         userRepository.save(reqSignUpDto.toEntity());
 
+    }
+
+    public ResCheckUserIdDto checkUserIdDuplication(String userId) {
+
+        boolean isExistUserId = userRepository.existsByUserId(userId);
+
+        return ResCheckUserIdDto.builder()
+                .userId(userId)
+                .available(!isExistUserId).build();
     }
 
     private ResTokenDto createTokens(User user){
