@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.service.AuthenticationEmailService;
@@ -22,7 +23,7 @@ public class AuthenticationEmailController {
     private final AuthenticationEmailService authenticationEmailService;
 
     @PostMapping("/authentication-numbers/sign-up")
-    public ResponseEntity<Void> generateEmailSignUpNumber(@RequestBody @Valid ReqEmailSignUpNumberDto reqEmailSignUpNumberDto,
+    public ResponseEntity<Void> sendEmailSignUpNumber(@RequestBody @Valid ReqEmailSignUpNumberDto reqEmailSignUpNumberDto,
                                                           BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
@@ -43,5 +44,17 @@ public class AuthenticationEmailController {
         authenticationEmailService.verifyEmailSignUpNumber(reqVerifySignUpNumberDto);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/authentication-numbers/find-password")
+    public ResponseEntity<Void> sendEmailTemporaryPassword(@RequestBody @Valid ReqEmailFindPasswordDto reqEmailFindPasswordDto,
+                                                           BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        authenticationEmailService.sendEmailTemporaryPassword(reqEmailFindPasswordDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -2,9 +2,11 @@ package duksung.backend.hororok.ugeubi.user.service;
 
 import duksung.backend.hororok.ugeubi.common.util.MailForm;
 import duksung.backend.hororok.ugeubi.common.util.RandomNumber;
+import duksung.backend.hororok.ugeubi.common.util.RandomString;
 import duksung.backend.hororok.ugeubi.user.domain.entity.SignUpNumber;
 import duksung.backend.hororok.ugeubi.user.domain.repository.SignUpNumberRepository;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +33,11 @@ public class AuthenticationEmailService {
             throw new IllegalArgumentException("중복되는 이메일 입니다.");
         }
 
-        String number = createAuthenticationEmailNumber();
+        String number = createAuthenticationNumber();
         javaMailSenderService.sendEmail(reqEmailSignUpNumberDto.getEmail(), MailForm.SIGN_UP.getSubject(),
                 MailForm.SIGN_UP.getContent()+number);
 
-        saveAuthenticationNumberAtRedis(reqEmailSignUpNumberDto.getEmail(), number);
+        saveAuthenticationNumberAtRedis(reqEmailSignUpNumberDto, number);
     }
 
     public void verifyEmailSignUpNumber(ReqVerifySignUpNumberDto reqVerifySignUpNumberDto) {
@@ -49,12 +51,33 @@ public class AuthenticationEmailService {
         signUpNumberRepository.delete(signUpNumber);
     }
 
-    private String createAuthenticationEmailNumber(){
+
+    public void sendEmailTemporaryPassword(ReqEmailFindPasswordDto reqEmailFindPasswordDto) {
+
+        boolean result = userRepository.existsByEmailAndUserId(reqEmailFindPasswordDto.getEmail(), reqEmailFindPasswordDto.getUserId());
+
+        if(!result){
+            throw new IllegalArgumentException("이메일과 아이디에 해당하는 사용자가 존재하지 않습니다.");
+        }
+
+        String temporaryPassword = createTemporaryPassword();
+        javaMailSenderService.sendEmail(reqEmailFindPasswordDto.getEmail(), MailForm.FIND_USER_PASSWORD.getSubject(),
+                MailForm.FIND_USER_PASSWORD.getContent() + temporaryPassword);
+
+        saveAuthenticationPasswordAtRedis(reqEmailFindPasswordDto, temporaryPassword);
+    }
+
+    private String createAuthenticationNumber(){
         return RandomNumber.generateRandomNumber().toString();
     }
 
+    private String createTemporaryPassword(){
+        return RandomString.generateRandomString();
+    }
+
     @Transactional
-    void saveAuthenticationNumberAtRedis(String email, String number){
+    void saveAuthenticationNumberAtRedis(ReqEmailSignUpNumberDto reqEmailSignUpNumberDto, String number){
+        String email = reqEmailSignUpNumberDto.getEmail();
         SignUpNumber signUpNumber = signUpNumberRepository.findById(email)
                 .orElse(SignUpNumber.builder()
                         .email(email)
@@ -63,5 +86,10 @@ public class AuthenticationEmailService {
         signUpNumber.changeNumber(number); // 이메일 인증번호 재전송의 경우
 
         signUpNumberRepository.save(signUpNumber);
+    }
+
+    @Transactional
+    void saveAuthenticationPasswordAtRedis(ReqEmailFindPasswordDto reqEmailFindPasswordDto, String temporaryPassword){
+        //TemporaryPassword temporaryPassword = TemporaryPassword
     }
 }
