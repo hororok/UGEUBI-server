@@ -43,5 +43,4 @@ public class JwtProvider {
         byte[] byteKey = key.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(byteKey);
     }
-
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @RedisHash(value = "sign_up_number", timeToLive = 300L)
 public class SignUpNumber implements Serializable {
     @Id
-    private String id;
+    private String id; //email
 
     private String authenticateNumber;
 

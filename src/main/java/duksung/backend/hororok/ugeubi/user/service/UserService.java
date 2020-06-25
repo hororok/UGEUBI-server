@@ -1,20 +1,22 @@
 package duksung.backend.hororok.ugeubi.user.service;
 
 import duksung.backend.hororok.ugeubi.common.util.MailForm;
+import duksung.backend.hororok.ugeubi.common.util.RandomString;
+import duksung.backend.hororok.ugeubi.common.util.ReplaceString;
 import duksung.backend.hororok.ugeubi.config.auth.JwtProvider;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
-import duksung.backend.hororok.ugeubi.user.dto.response.ResCheckUserIdDto;
-import duksung.backend.hororok.ugeubi.user.dto.response.ResTokenDto;
-import duksung.backend.hororok.ugeubi.user.dto.response.ResUserDto;
-import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
+import duksung.backend.hororok.ugeubi.user.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+
+import static duksung.backend.hororok.ugeubi.common.util.ReplaceString.changeAsterisk;
 
 @RequiredArgsConstructor
 @Service
@@ -61,12 +63,13 @@ public class UserService {
                 .available(!isExistUserId).build();
     }
 
-    public void findForgottenUserId(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(()->new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
+    public ResFindIdDto findForgottenUserId(ReqFindIdDto reqFindIdDto) {
+        User user = userRepository.findByEmailAndUserName(reqFindIdDto.getEmail(), reqFindIdDto.getUserName())
+                .orElseThrow(()-> new IllegalArgumentException("해당 이메일과 유저 이름에 해당하는 계정이 존재하지 않습니다."));
 
-        javaMailSenderService.sendEmail(user.getEmail(), MailForm.FIND_USER_ID.getSubject(),
-                MailForm.FIND_USER_ID.getContent() + user.getUserId());
+        String changedId = ReplaceString.changeAsterisk(user.getUserId());
+
+        return ResFindIdDto.builder().userId(changedId).build();
     }
 
     private ResTokenDto createTokens(User user){

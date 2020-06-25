@@ -1,9 +1,11 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
 import com.sun.net.httpserver.HttpsConfigurator;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResCheckUserIdDto;
+import duksung.backend.hororok.ugeubi.user.dto.response.ResFindIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResUserInfoDto;
 import duksung.backend.hororok.ugeubi.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +53,12 @@ public class UserController {
     }
 
     @GetMapping("/users/find-id")
-    public ResponseEntity<Void> findForgottenUserId(@RequestParam("email") String email){
-        if(email == null){
+    public ResponseEntity<ResFindIdDto> findForgottenUserId(@RequestBody @Valid ReqFindIdDto reqFindIdDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
-        userService.findForgottenUserId(email);
-
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findForgottenUserId(reqFindIdDto));
     }
 
 }

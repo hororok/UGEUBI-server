@@ -10,11 +10,14 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqEmailFindPasswordDto {
+public class ReqVerifyFindPasswordDto {
     @NotNull
     private String userId;
 
     @NotNull
     @Email
     private String email;
+
+    @NotNull
+    private String temporaryPassword;
 }

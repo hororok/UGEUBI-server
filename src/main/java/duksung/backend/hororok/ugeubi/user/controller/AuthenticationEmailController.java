@@ -2,6 +2,7 @@ package duksung.backend.hororok.ugeubi.user.controller;
 
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifyFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.service.AuthenticationEmailService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,5 +58,17 @@ public class AuthenticationEmailController {
         authenticationEmailService.sendEmailTemporaryPassword(reqEmailFindPasswordDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/authentication/find-password")
+    public ResponseEntity<Void> verifyEmailTemporaryPassword(@RequestBody @Valid ReqVerifyFindPasswordDto reqVerifyFindPasswordDto,
+                                                             BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        authenticationEmailService.verifyEmailTemporaryPassword(reqVerifyFindPasswordDto);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
