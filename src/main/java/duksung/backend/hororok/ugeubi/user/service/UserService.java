@@ -18,15 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 
-import static duksung.backend.hororok.ugeubi.common.util.ReplaceString.changeAsterisk;
-
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
-    private final JavaMailSenderService javaMailSenderService;
 
     public ResUserInfoDto signIn(ReqSignInDto reqSignInDto){
         User user = userRepository.findByUserId(reqSignInDto.getUserId())
@@ -85,11 +82,11 @@ public class UserService {
     private ResTokenDto createTokens(User user){
 
         String accessToken = jwtProvider.createAccessToken(user.getUserId());
-        String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
+        //String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
 
         return ResTokenDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                //.refreshToken(refreshToken)
                 .build();
     }
 
