@@ -10,23 +10,23 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-@RedisHash(value = "temporary_password", timeToLive = 60L)
-public class TemporaryPassword implements Serializable {
+@RedisHash(value = "find_password_code", timeToLive = 60L)
+public class FindPasswordCode implements Serializable {
     @Id
     private String id; //email
 
     private String userId;
 
-    private String temporaryPassword;
+    private String findPasswordCode;
 
     @Builder
-    public TemporaryPassword(String email, String userId, String temporaryPassword){
+    public FindPasswordCode(String email, String userId, String findPasswordCode){
         this.id=email;
         this.userId=userId;
-        this.temporaryPassword=temporaryPassword;
+        this.findPasswordCode=findPasswordCode;
     }
 
-    public void changeTemporaryPassword(String temporaryPassword){
-        this.temporaryPassword=temporaryPassword;
+    public void changePasswordCode(String findPasswordCode){
+        this.findPasswordCode=findPasswordCode;
     }
 }

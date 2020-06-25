@@ -4,17 +4,15 @@ import duksung.backend.hororok.ugeubi.common.util.MailForm;
 import duksung.backend.hororok.ugeubi.common.util.RandomNumber;
 import duksung.backend.hororok.ugeubi.common.util.RandomString;
 import duksung.backend.hororok.ugeubi.user.domain.entity.SignUpNumber;
-import duksung.backend.hororok.ugeubi.user.domain.entity.TemporaryPassword;
+import duksung.backend.hororok.ugeubi.user.domain.entity.FindPasswordCode;
 import duksung.backend.hororok.ugeubi.user.domain.repository.SignUpNumberRepository;
-import duksung.backend.hororok.ugeubi.user.domain.repository.TemporaryPasswordRepository;
+import duksung.backend.hororok.ugeubi.user.domain.repository.FindPasswordCodeRepository;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifyFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +25,7 @@ public class AuthenticationEmailService {
     private final UserRepository userRepository;
     private final SignUpNumberRepository signUpNumberRepository;
     private final JavaMailSenderService javaMailSenderService;
-    private final TemporaryPasswordRepository temporaryPasswordRepository;
+    private final FindPasswordCodeRepository findPasswordCodeRepository;
     //private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void sendEmailSignUpNumber(ReqEmailSignUpNumberDto reqEmailSignUpNumberDto){
@@ -55,7 +53,7 @@ public class AuthenticationEmailService {
         signUpNumberRepository.delete(signUpNumber);
     }
 
-    public void sendEmailTemporaryPassword(ReqEmailFindPasswordDto reqEmailFindPasswordDto) {
+    public void sendEmailFindPasswordCode(ReqEmailFindPasswordDto reqEmailFindPasswordDto) {
 
         boolean result = userRepository.existsByEmailAndUserId(reqEmailFindPasswordDto.getEmail(), reqEmailFindPasswordDto.getUserId());
 
@@ -63,29 +61,29 @@ public class AuthenticationEmailService {
             throw new IllegalArgumentException("이메일과 아이디에 해당하는 사용자가 존재하지 않습니다.");
         }
 
-        String temporaryPassword = createTemporaryPassword();
+        String passwordCode = createFindPasswordCode();
         javaMailSenderService.sendEmail(reqEmailFindPasswordDto.getEmail(), MailForm.FIND_USER_PASSWORD.getSubject(),
-                MailForm.FIND_USER_PASSWORD.getContent() + temporaryPassword);
+                MailForm.FIND_USER_PASSWORD.getContent() + passwordCode);
 
-        saveAuthenticationPasswordAtRedis(reqEmailFindPasswordDto, temporaryPassword);
+        saveAuthenticationPasswordAtRedis(reqEmailFindPasswordDto, passwordCode);
     }
 
-    public void verifyEmailTemporaryPassword(ReqVerifyFindPasswordDto reqVerifyFindPasswordDto) {
-        TemporaryPassword temporaryPassword = temporaryPasswordRepository.findByIdAndUserId(reqVerifyFindPasswordDto.getEmail(),
+    public void verifyEmailFindPasswordCode(ReqVerifyFindPasswordDto reqVerifyFindPasswordDto) {
+        FindPasswordCode passwordCode = findPasswordCodeRepository.findByIdAndUserId(reqVerifyFindPasswordDto.getEmail(),
                 reqVerifyFindPasswordDto.getUserId())
-                .orElseThrow(()->new IllegalArgumentException("임시 비밀번호의 만료시간이 지났거나 임시 비밀번호를 보낸 이메일/아이디가 아닙니다."));
+                .orElseThrow(()->new IllegalArgumentException("인증코드의 만료시간이 지났거나 인증코드를 보낸 이메일/아이디가 아닙니다."));
 
-        if(!temporaryPassword.getTemporaryPassword().equals(reqVerifyFindPasswordDto.getTemporaryPassword())){
-            throw new IllegalArgumentException("임시 비밀번호가 일치하지 않습니다.");
+        if(!passwordCode.getFindPasswordCode().equals(reqVerifyFindPasswordDto.getTemporaryPassword())){
+            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
         }
 
-        temporaryPasswordRepository.delete(temporaryPassword);
+        findPasswordCodeRepository.delete(passwordCode);
     }
     private String createAuthenticationNumber(){
         return RandomNumber.generateRandomNumber().toString();
     }
 
-    private String createTemporaryPassword(){
+    private String createFindPasswordCode(){
         return RandomString.generateRandomString();
     }
 
@@ -105,14 +103,14 @@ public class AuthenticationEmailService {
     @Transactional
     void saveAuthenticationPasswordAtRedis(ReqEmailFindPasswordDto reqEmailFindPasswordDto, String randomPassword){
         String email = reqEmailFindPasswordDto.getEmail();
-        TemporaryPassword temporaryPassword = temporaryPasswordRepository.findById(email)
-                .orElse(TemporaryPassword.builder()
+        FindPasswordCode temporaryPassword = findPasswordCodeRepository.findById(email)
+                .orElse(FindPasswordCode.builder()
                         .email(email)
                         .userId(reqEmailFindPasswordDto.getUserId())
                         .build());
 
-        temporaryPassword.changeTemporaryPassword(randomPassword); // 비밀번호 찾기 이메일 재전송의 경우
+        temporaryPassword.changePasswordCode(randomPassword); // 비밀번호 찾기 이메일 재전송의 경우
 
-        temporaryPasswordRepository.save(temporaryPassword);
+        findPasswordCodeRepository.save(temporaryPassword);
     }
 }

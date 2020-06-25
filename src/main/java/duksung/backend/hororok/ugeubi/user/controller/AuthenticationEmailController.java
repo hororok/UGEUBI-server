@@ -55,7 +55,7 @@ public class AuthenticationEmailController {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
-        authenticationEmailService.sendEmailTemporaryPassword(reqEmailFindPasswordDto);
+        authenticationEmailService.sendEmailFindPasswordCode(reqEmailFindPasswordDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -67,7 +67,7 @@ public class AuthenticationEmailController {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
-        authenticationEmailService.verifyEmailTemporaryPassword(reqVerifyFindPasswordDto);
+        authenticationEmailService.verifyEmailFindPasswordCode(reqVerifyFindPasswordDto);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

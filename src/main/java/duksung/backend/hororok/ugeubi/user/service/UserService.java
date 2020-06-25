@@ -7,12 +7,14 @@ import duksung.backend.hororok.ugeubi.config.auth.JwtProvider;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqModifyPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 
@@ -70,6 +72,14 @@ public class UserService {
         String changedId = ReplaceString.changeAsterisk(user.getUserId());
 
         return ResFindIdDto.builder().userId(changedId).build();
+    }
+
+    @Transactional
+    public void modifyUserPassword(ReqModifyPasswordDto reqModifyPasswordDto) {
+        User user = userRepository.findByUserId(reqModifyPasswordDto.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("아이디에 해당하는 사용자가 없습니다."));
+
+        user.modifyPassword(reqModifyPasswordDto.getPassword());
     }
 
     private ResTokenDto createTokens(User user){

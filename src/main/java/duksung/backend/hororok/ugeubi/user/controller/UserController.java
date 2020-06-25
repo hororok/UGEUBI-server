@@ -1,7 +1,7 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
-import com.sun.net.httpserver.HttpsConfigurator;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
+import duksung.backend.hororok.ugeubi.user.dto.request.ReqModifyPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.ResCheckUserIdDto;
@@ -61,4 +61,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findForgottenUserId(reqFindIdDto));
     }
 
+    @PatchMapping("/users/password")
+    public ResponseEntity<Void> modifyUserPassword(@RequestBody @Valid ReqModifyPasswordDto reqModifyPasswordDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.modifyUserPassword(reqModifyPasswordDto);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
 }
