@@ -1,9 +1,8 @@
 package duksung.backend.hororok.ugeubi.user.service;
 
-import duksung.backend.hororok.ugeubi.common.util.MailForm;
-import duksung.backend.hororok.ugeubi.common.util.RandomString;
+import duksung.backend.hororok.ugeubi.common.auth.JwtProvider;
+import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.common.util.ReplaceString;
-import duksung.backend.hororok.ugeubi.config.auth.JwtProvider;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
@@ -26,19 +25,18 @@ public class UserService {
     private final JwtProvider jwtProvider;
 
     public ResUserInfoDto signIn(ReqSignInDto reqSignInDto){
-        User user = userRepository.findByUserId(reqSignInDto.getUserId())
-                .orElseThrow(NoResultException::new);
+        User user = getUserByUserId(reqSignInDto.getUserId());
 
         if(user.isNotEqualToPassword(BCrypt.hashpw(reqSignInDto.getPassword(), BCrypt.gensalt()))){
             throw new IllegalArgumentException("비밀번호가 일치하지 않음");
         }
 
-        ResUserDto resUserDto = createUserInfo(user);
+        UserInfo userInfo = createUserInfo(user);
         ResTokenDto resTokenDto = createTokens(user);
 
         return ResUserInfoDto.builder()
                 .tokens(resTokenDto)
-                .user(resUserDto)
+                .user(userInfo)
                 .build();
     }
 
@@ -50,7 +48,6 @@ public class UserService {
         }
 
         userRepository.save(reqSignUpDto.toEntity());
-
     }
 
     public ResCheckUserIdDto checkUserIdDuplication(String userId) {
@@ -79,22 +76,27 @@ public class UserService {
         user.modifyPassword(reqModifyPasswordDto.getPassword());
     }
 
+    public UserInfo createUserInfo(User user){
+        return UserInfo.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .build();
+    }
+
+    public User getUserByUserId(String userId){
+        return userRepository.findByUserId(userId).orElseThrow(NoResultException::new);
+    }
+
     private ResTokenDto createTokens(User user){
 
         String accessToken = jwtProvider.createAccessToken(user.getUserId());
         //String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
 
         return ResTokenDto.builder()
+                .tokenType("bearer")
                 .accessToken(accessToken)
                 //.refreshToken(refreshToken)
-                .build();
-    }
-
-    private ResUserDto createUserInfo(User user){
-        return ResUserDto.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .email(user.getEmail())
                 .build();
     }
 }

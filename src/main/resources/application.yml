@@ -36,5 +36,5 @@ spring:
     level:
       root: trace
 
-secret.key: 테스트용 키 입니다
+secret.key: 테스트용 키 입니다 키는 길어야 합니다 아주아주 길면 좋아요 길게길게
 spring.profiles.include: email

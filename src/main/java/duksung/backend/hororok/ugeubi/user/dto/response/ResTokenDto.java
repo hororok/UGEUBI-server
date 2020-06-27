@@ -5,11 +5,13 @@ import lombok.Getter;
 
 @Getter
 public class ResTokenDto {
+    private String tokenType;
     private String accessToken;
     //private String refreshToken;
 
     @Builder
-    public ResTokenDto(String accessToken, String refreshToken){
+    public ResTokenDto(String tokenType, String accessToken){
+        this.tokenType = tokenType;
         this.accessToken = accessToken;
         //this.refreshToken = refreshToken;
     }
