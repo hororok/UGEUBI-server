@@ -23,10 +23,6 @@ public class JwtProvider {
         return createJWT(subject, ACCESS_TOKEN_VALID_TIME);
     }
 
-    /*public String createRefreshToken(String subject){
-        return createJWT(subject,REFRESH_TOKEN_VALID_TIME);
-    }*/
-
     public String getUserIdFromJwtHeader(String tokenHeader){
         Claims claims = getPayLoad(subStringTokenType(tokenHeader));
         return claims.getSubject();

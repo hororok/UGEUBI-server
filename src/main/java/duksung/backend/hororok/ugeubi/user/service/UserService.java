@@ -91,12 +91,10 @@ public class UserService {
     private ResTokenDto createTokens(User user){
 
         String accessToken = jwtProvider.createAccessToken(user.getUserId());
-        //String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
 
         return ResTokenDto.builder()
                 .tokenType("bearer")
                 .accessToken(accessToken)
-                //.refreshToken(refreshToken)
                 .build();
     }
 }
