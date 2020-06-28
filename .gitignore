@@ -138,3 +138,6 @@ gradle-app.setting
 
 ###email
 application-email.yml
+
+###real-db
+application-real-db.yml

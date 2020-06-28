@@ -2,6 +2,8 @@ spring:
   profiles:
     active: local # 기본 환경 선택
 
+secret.key: 테스트용 키 입니다 키는 길어야 합니다 아주아주 길면 좋아요 길게길게
+
 ---
 
 spring:
@@ -36,5 +38,22 @@ spring:
     level:
       root: trace
 
-secret.key: 테스트용 키 입니다 키는 길어야 합니다 아주아주 길면 좋아요 길게길게
 spring.profiles.include: email
+
+---
+
+spring:
+  profiles: product
+  redis:
+    host: localhost
+    port: 6379
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring.profiles.include: email,real-db

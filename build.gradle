@@ -48,7 +48,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20200518'
-
+    compile('org.mariadb.jdbc:mariadb-java-client') //maria-db
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
