@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-@RedisHash(value = "find_password_code", timeToLive = 60L)
+@RedisHash(value = "find_password_code", timeToLive = 300L)
 public class FindPasswordCode implements Serializable {
     @Id
     private String id; //email
