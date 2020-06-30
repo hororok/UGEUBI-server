@@ -1,0 +1,59 @@
+spring:
+  profiles:
+    active: local # 기본 환경 선택
+
+secret.key: 테스트용 키 입니다 키는 길어야 합니다 아주아주 길면 좋아요 길게길게
+
+---
+
+spring:
+  profiles: local
+  #datasource:
+  #  platform: h2
+  #  hikari:
+  #    jdbc-url: jdbc:h2:tcp://localhost:9092/mem:testdb;MVCC=TRUE
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
+  redis:
+    host: localhost
+    port: 6379
+
+  jpa:
+    database-platform: H2
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  h2:
+    console:
+      enabled: true
+
+  logging:
+    level:
+      root: trace
+
+spring.profiles.include: email
+
+---
+
+spring:
+  profiles: product
+  redis:
+    host: localhost
+    port: 6379
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring.profiles.include: email,real-db

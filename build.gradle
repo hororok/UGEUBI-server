@@ -34,21 +34,32 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail' //메일
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("org.hibernate:hibernate-core:5.4.6.Final")
+    implementation 'org.mindrot:jbcrypt:0.4' //password 암호화
+    implementation 'io.jsonwebtoken:jjwt-api:0.10.7' //jwt
+    implementation('org.springframework.boot:spring-boot-starter-data-redis') //spring-data-redis
+    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2' //embedded-redis
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20200518'
+<<<<<<< HEAD
 
     implementation 'com.google.firebase:firebase-admin:6.8.1'
 
+=======
+    compile('org.mariadb.jdbc:mariadb-java-client') //maria-db
+>>>>>>> origin/master
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.10.7' //jwt
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.10.7'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

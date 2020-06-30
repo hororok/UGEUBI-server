@@ -23,7 +23,9 @@ public class FcmController {
     @Autowired
     AndroidPushNotificationsService androidPushNotificationsService;
 
-    @GetMapping(value = "/send")
+    //복용약 정보 체크해서 알림
+   // @Scheduled(fixedRate = 1000)
+    @GetMapping(value = "/takingInfoSend")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException  {
         String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
 
