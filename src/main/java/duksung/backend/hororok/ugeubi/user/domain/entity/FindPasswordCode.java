@@ -13,15 +13,18 @@ import java.io.Serializable;
 @RedisHash(value = "find_password_code", timeToLive = 300L)
 public class FindPasswordCode implements Serializable {
     @Id
-    private String id; //email
+    private String id;
+
+    private String email;
 
     private String userId;
 
     private String findPasswordCode;
 
     @Builder
-    public FindPasswordCode(String email, String userId, String findPasswordCode){
-        this.id=email;
+    public FindPasswordCode(String id, String email, String userId, String findPasswordCode){
+        this.id=id;
+        this.email=email;
         this.userId=userId;
         this.findPasswordCode=findPasswordCode;
     }

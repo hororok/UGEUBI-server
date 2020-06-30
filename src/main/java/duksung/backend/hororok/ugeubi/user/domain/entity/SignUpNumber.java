@@ -13,13 +13,16 @@ import java.io.Serializable;
 @RedisHash(value = "sign_up_number", timeToLive = 300L)
 public class SignUpNumber implements Serializable {
     @Id
-    private String id; //email
+    private String id;
+
+    private String email;
 
     private String authenticateNumber;
 
     @Builder
-    public SignUpNumber(String email, String authenticateNumber){
-        this.id=email;
+    public SignUpNumber(String id, String email, String authenticateNumber){
+        this.id=id;
+        this.email=email;
         this.authenticateNumber=authenticateNumber;
     }
 

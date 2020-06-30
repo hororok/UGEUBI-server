@@ -13,6 +13,8 @@ import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifyFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class AuthenticationEmailService {
     private final FindPasswordCodeRepository findPasswordCodeRepository;
     //private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static final String SIGN_UP_ID = "sign-up-id";
+    private static final String FIND_PW_CODE_ID = "find-pw-code-id";
+
     public void sendEmailSignUpNumber(ReqEmailSignUpNumberDto reqEmailSignUpNumberDto){
         boolean isExistEmail = userRepository.existsByEmail(reqEmailSignUpNumberDto.getEmail());
 
@@ -42,8 +47,10 @@ public class AuthenticationEmailService {
         saveAuthenticationNumberAtRedis(reqEmailSignUpNumberDto, number);
     }
 
+    @Transactional
     public void verifyEmailSignUpNumber(ReqVerifySignUpNumberDto reqVerifySignUpNumberDto) {
-        SignUpNumber signUpNumber = signUpNumberRepository.findById(reqVerifySignUpNumberDto.getEmail())
+        String id = SIGN_UP_ID+reqVerifySignUpNumberDto.getEmail();
+        SignUpNumber signUpNumber = signUpNumberRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("인증번호의 만료시간이 지났거나 인증번호를 보낸 이메일이 아닙니다."));
 
         if(!signUpNumber.getAuthenticateNumber().equals(reqVerifySignUpNumberDto.getAuthenticateNumber())){
@@ -68,9 +75,10 @@ public class AuthenticationEmailService {
         saveAuthenticationPasswordAtRedis(reqEmailFindPasswordDto, passwordCode);
     }
 
+    @Transactional
     public void verifyEmailFindPasswordCode(ReqVerifyFindPasswordDto reqVerifyFindPasswordDto) {
-        FindPasswordCode passwordCode = findPasswordCodeRepository.findByIdAndUserId(reqVerifyFindPasswordDto.getEmail(),
-                reqVerifyFindPasswordDto.getUserId())
+        String id = FIND_PW_CODE_ID+reqVerifyFindPasswordDto.getEmail();
+        FindPasswordCode passwordCode = findPasswordCodeRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("인증코드의 만료시간이 지났거나 인증코드를 보낸 이메일/아이디가 아닙니다."));
 
         if(!passwordCode.getFindPasswordCode().equals(reqVerifyFindPasswordDto.getTemporaryPassword())){
@@ -90,8 +98,11 @@ public class AuthenticationEmailService {
     @Transactional
     void saveAuthenticationNumberAtRedis(ReqEmailSignUpNumberDto reqEmailSignUpNumberDto, String number){
         String email = reqEmailSignUpNumberDto.getEmail();
-        SignUpNumber signUpNumber = signUpNumberRepository.findById(email)
+        String id = SIGN_UP_ID+email;
+
+        SignUpNumber signUpNumber = signUpNumberRepository.findById(id)
                 .orElse(SignUpNumber.builder()
+                        .id(id)
                         .email(email)
                         .build());
 
@@ -101,16 +112,20 @@ public class AuthenticationEmailService {
     }
 
     @Transactional
-    void saveAuthenticationPasswordAtRedis(ReqEmailFindPasswordDto reqEmailFindPasswordDto, String randomPassword){
+    void saveAuthenticationPasswordAtRedis(ReqEmailFindPasswordDto reqEmailFindPasswordDto, String passwordCode){
         String email = reqEmailFindPasswordDto.getEmail();
-        FindPasswordCode temporaryPassword = findPasswordCodeRepository.findById(email)
+        String id = FIND_PW_CODE_ID+email;
+
+        FindPasswordCode temporaryPassword = findPasswordCodeRepository.findById(id)
                 .orElse(FindPasswordCode.builder()
+                        .id(id)
                         .email(email)
                         .userId(reqEmailFindPasswordDto.getUserId())
                         .build());
 
-        temporaryPassword.changePasswordCode(randomPassword); // 비밀번호 찾기 이메일 재전송의 경우
+        temporaryPassword.changePasswordCode(passwordCode); // 비밀번호 찾기 이메일 재전송의 경우
 
         findPasswordCodeRepository.save(temporaryPassword);
+        //logger.info("저장된 코드:"+findPasswordCodeRepository.findById(id).get().getFindPasswordCode());
     }
 }
