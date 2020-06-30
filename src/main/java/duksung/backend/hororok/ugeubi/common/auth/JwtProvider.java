@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class JwtProvider {
     private static final String TOKEN_TYPE = "Bearer";
-    private static final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60L * 60L * 24L;//하루
+    private static final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60L * 60L * 24L * 30L;//한 달
     //private static final Long REFRESH_TOKEN_VALID_TIME = 1000L * 60L * 60L * 24L * 30L;//한 달
 
     @Value("${secret.key}")
