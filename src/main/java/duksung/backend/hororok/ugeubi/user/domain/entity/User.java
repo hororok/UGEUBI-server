@@ -36,6 +36,6 @@ public class User extends BaseTimeEntity {
     }
 
     public void modifyPassword(String password){ this.password= BCrypt.hashpw(password,BCrypt.gensalt()); }
-    public boolean isNotEqualToPassword(String password){ return BCrypt.checkpw(password, this.password); }
+    public boolean isNotEqualToPassword(String password){ return !BCrypt.checkpw(password, this.password); }
 
 }

@@ -27,7 +27,7 @@ public class UserService {
     public ResUserInfoDto signIn(ReqSignInDto reqSignInDto){
         User user = getUserByUserId(reqSignInDto.getUserId());
 
-        if(user.isNotEqualToPassword(BCrypt.hashpw(reqSignInDto.getPassword(), BCrypt.gensalt()))){
+        if(user.isNotEqualToPassword(reqSignInDto.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않음");
         }
 
