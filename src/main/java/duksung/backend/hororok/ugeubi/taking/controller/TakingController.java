@@ -3,12 +3,9 @@ package duksung.backend.hororok.ugeubi.taking.controller;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
-<<<<<<< HEAD
-import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
+
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoTermSaveRequestDTO;
-=======
-//import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
->>>>>>> origin/master
+import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
 import duksung.backend.hororok.ugeubi.taking.service.TakingHistoryService;
 import duksung.backend.hororok.ugeubi.taking.service.TakingInfoService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +31,9 @@ public class TakingController {
 
     //복용약 등록 - 요일
     @PostMapping("/registerTakingInfo")
-    //public Long save(@RequestBody TakingInfoSaveRequestDTO requestDTO) {
-    //    return takingInfoService.save(requestDTO);
-    //}
+    public Long save(@RequestBody TakingInfoSaveRequestDTO requestDTO) {
+        return takingInfoService.save(requestDTO);
+    }
 
     //복용약 등록 - 간격
     @PostMapping("/registerTakingInfoTerm")

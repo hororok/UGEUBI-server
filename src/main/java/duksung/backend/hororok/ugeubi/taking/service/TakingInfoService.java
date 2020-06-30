@@ -3,13 +3,9 @@ package duksung.backend.hororok.ugeubi.taking.service;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoRepository;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoTermRepository;
-import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoResponseDTO;
-<<<<<<< HEAD
+
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoTermSaveRequestDTO;
-=======
-//import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
->>>>>>> origin/master
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +20,9 @@ public class TakingInfoService {
     private final TakingInfoTermRepository takingInfoTermRepository;
 
     @Transactional
-    //public Long save(TakingInfoSaveRequestDTO requestDTO){
-    //     return takingInfoRepository.save(requestDTO.toEntity()).getTaking_info_id();
-    //}
+    public Long save(TakingInfoSaveRequestDTO requestDTO){
+         return takingInfoRepository.save(requestDTO.toEntity()).getTaking_info_id();
+    }
 
     @Transactional
     public Long saveTerm(TakingInfoTermSaveRequestDTO requestDTO){
