@@ -2,6 +2,7 @@ package duksung.backend.hororok.ugeubi.medicine.controller;
 
 import duksung.backend.hororok.ugeubi.medicine.dto.MedicineDURRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.web.bind.annotation.*;
@@ -65,8 +66,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
 
@@ -114,8 +119,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[임부금기] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -162,8 +171,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
 
@@ -211,8 +224,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[투여기간주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -259,8 +276,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[노인주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -307,8 +328,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[효능군중복] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -355,8 +380,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[서방형 제제 분할주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -403,8 +432,12 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 
     //[DUR품목정보 조회] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -450,7 +483,11 @@ public class MedicineController {
 
         if(jsonBody.get("items") != "")
             return jsonBody.getJSONObject("items").toString();
-        else
-            return "{}";
+        else {
+            JSONObject jsonobj = new JSONObject();
+            JSONArray itemarray = new JSONArray();
+            jsonobj.put("item", itemarray);
+            return jsonobj.toString();
+        }
     }
 }
