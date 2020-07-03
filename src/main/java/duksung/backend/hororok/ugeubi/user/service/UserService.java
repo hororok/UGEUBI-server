@@ -79,6 +79,7 @@ public class UserService {
 
     public UserInfo createUserInfo(User user){
         return UserInfo.builder()
+                .id(user.getId())
                 .userId(user.getUserId())
                 .userName(user.getUserName())
                 .email(user.getEmail())
