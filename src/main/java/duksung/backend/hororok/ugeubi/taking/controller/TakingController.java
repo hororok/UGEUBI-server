@@ -1,7 +1,7 @@
 package duksung.backend.hororok.ugeubi.taking.controller;
 
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoTermSaveRequestDTO;
@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class TakingController {
 
     //사용자의 복용약 정보 가져오기
     @GetMapping("/getTakingInfo")
-    public List<TakingInfo> findById(@RequestParam(value = "id") Long id) {
+    public List<TakingInfoDay> findById(@RequestParam(value = "id") Long id) {
         return takingInfoService.findAllByid(id);
     }
 
@@ -57,10 +58,26 @@ public class TakingController {
     /******TakingHistory******/
 
     //복용 기록 등록
-    @PostMapping("/registerTakingHistory")
+    // @Scheduled(fixedRate = 1000) //매일 자정에
+/*    @PostMapping("/registerTakingHistory")
+    public Long save() {
+        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+        // 1     2     3     4     5     6     7
+        final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
+        String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1];
+        //System.out.println("현재 요일: " + week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]);
+        List<TakingInfo> ti = takingInfoService.findByTaking_day(week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]);
+
+       // TakingHistorySaveRequestDTO requestDTO
+        return takingHistoryService.save(requestDTO);
+    }*/
+
+    //복용 기록 등록
+  /*  @PostMapping("/registerTakingHistory")
     public Long save(@RequestBody TakingHistorySaveRequestDTO requestDTO) {
         return takingHistoryService.save(requestDTO);
-    }
+    }*/
+
 
     //사용자의 날짜별 복용 정보 가져오기
     @GetMapping("/getTakingHistory")

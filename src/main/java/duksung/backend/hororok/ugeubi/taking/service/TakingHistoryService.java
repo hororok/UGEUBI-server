@@ -1,9 +1,7 @@
 package duksung.backend.hororok.ugeubi.taking.service;
 
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingHistoryRepository;
-import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoRepository;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 //import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
 import lombok.RequiredArgsConstructor;

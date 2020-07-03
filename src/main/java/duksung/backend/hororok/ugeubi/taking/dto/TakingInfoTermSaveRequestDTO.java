@@ -1,6 +1,5 @@
 package duksung.backend.hororok.ugeubi.taking.dto;
 
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoTerm;
 import lombok.Builder;
 import lombok.Getter;

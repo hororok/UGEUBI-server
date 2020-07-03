@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-/**약 복용을 기간으로 설정한 경우**/
+/**약 복용을 요일로 설정한 경우**/
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "taking_info_terms")
-public class TakingInfoTerm extends BaseTimeEntity {
+@Table(name = "taking_info_days")
+public class TakingInfoDay extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,25 +24,25 @@ public class TakingInfoTerm extends BaseTimeEntity {
 
     private Long medicineId;
 
-    private Integer takingTerm; // 복용 간격 며칠 1~7일
+    private String takingTime; // 복용 시간 hh:mm:ss
 
-    private String takingTime;  // 복용 시간 hh:mm:ss
+    private String takingDayOfWeek; // 복용 요일 월,화,수,목,금,토,일
 
     private Integer takingNumber; // 복용 개수
 
     @Builder
-    private TakingInfoTerm(Long userId, Long medicineId, Integer takingTerm, String takingTime, Integer takingNumber){
+    private TakingInfoDay(Long userId, Long medicineId, String takingTime, String takingDayOfWeek, Integer takingNumber){
         this.userId=userId;
         this.medicineId=medicineId;
-        this.takingTerm=takingTerm;
         this.takingTime=takingTime;
+        this.takingDayOfWeek=takingDayOfWeek;
         this.takingNumber=takingNumber;
     }
 
-    public void modify(Long medicineId, Integer takingTerm, String takingTime, Integer takingNumber){
+    public void modify(Long medicineId, String takingTime, String takingDayOfWeek, Integer takingNumber){
         this.medicineId=medicineId;
-        this.takingTerm=takingTerm;
         this.takingTime=takingTime;
+        this.takingDayOfWeek=takingDayOfWeek;
         this.takingNumber=takingNumber;
     }
 }
