@@ -4,6 +4,7 @@ import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifyFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
+import duksung.backend.hororok.ugeubi.user.exception.RequestWrongFieldException;
 import duksung.backend.hororok.ugeubi.user.service.AuthenticationEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -28,7 +29,7 @@ public class AuthenticationEmailController {
     public ResponseEntity<Void> sendEmailSignUpNumber(@RequestBody @Valid ReqEmailSignUpNumberDto reqEmailSignUpNumberDto,
                                                           BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new RequestWrongFieldException();
         }
 
         authenticationEmailService.sendEmailSignUpNumber(reqEmailSignUpNumberDto);
@@ -40,7 +41,7 @@ public class AuthenticationEmailController {
     public ResponseEntity<Void> verifyEmailSignUpNumber(@RequestBody @Valid ReqVerifySignUpNumberDto reqVerifySignUpNumberDto,
                                                         BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new RequestWrongFieldException();
         }
 
         authenticationEmailService.verifyEmailSignUpNumber(reqVerifySignUpNumberDto);
@@ -52,7 +53,7 @@ public class AuthenticationEmailController {
     public ResponseEntity<Void> sendEmailTemporaryPassword(@RequestBody @Valid ReqEmailFindPasswordDto reqEmailFindPasswordDto,
                                                            BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new RequestWrongFieldException();
         }
 
         authenticationEmailService.sendEmailFindPasswordCode(reqEmailFindPasswordDto);
@@ -64,7 +65,7 @@ public class AuthenticationEmailController {
     public ResponseEntity<Void> verifyEmailTemporaryPassword(@RequestBody @Valid ReqVerifyFindPasswordDto reqVerifyFindPasswordDto,
                                                              BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new RequestWrongFieldException();
         }
 
         authenticationEmailService.verifyEmailFindPasswordCode(reqVerifyFindPasswordDto);
