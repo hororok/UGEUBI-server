@@ -1,6 +1,6 @@
 package duksung.backend.hororok.ugeubi.medicine.controller;
 
-import duksung.backend.hororok.ugeubi.medicine.dto.MedicineDURRequestDTO;
+import duksung.backend.hororok.ugeubi.medicine.dto.request.MedicineDURRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
