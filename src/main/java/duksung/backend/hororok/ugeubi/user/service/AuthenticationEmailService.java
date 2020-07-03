@@ -12,14 +12,17 @@ import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqEmailSignUpNumberDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifyFindPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqVerifySignUpNumberDto;
+import duksung.backend.hororok.ugeubi.user.exception.ExistUserEmailException;
+import duksung.backend.hororok.ugeubi.user.exception.IsNotEqualToAuthCodeException;
+import duksung.backend.hororok.ugeubi.user.exception.NoExistUserAccountException;
+import duksung.backend.hororok.ugeubi.user.exception.UnAuthorizedAuthCodeException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AuthenticationEmailService {
@@ -28,7 +31,6 @@ public class AuthenticationEmailService {
     private final SignUpNumberRepository signUpNumberRepository;
     private final JavaMailSenderService javaMailSenderService;
     private final FindPasswordCodeRepository findPasswordCodeRepository;
-    //private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final String SIGN_UP_ID = "sign-up-id";
     private static final String FIND_PW_CODE_ID = "find-pw-code-id";
@@ -37,7 +39,7 @@ public class AuthenticationEmailService {
         boolean isExistEmail = userRepository.existsByEmail(reqEmailSignUpNumberDto.getEmail());
 
         if(isExistEmail){
-            throw new IllegalArgumentException("중복되는 이메일 입니다.");
+            throw new ExistUserEmailException();
         }
 
         String number = createAuthenticationNumber();
@@ -51,10 +53,10 @@ public class AuthenticationEmailService {
     public void verifyEmailSignUpNumber(ReqVerifySignUpNumberDto reqVerifySignUpNumberDto) {
         String id = SIGN_UP_ID+reqVerifySignUpNumberDto.getEmail();
         SignUpNumber signUpNumber = signUpNumberRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("인증번호의 만료시간이 지났거나 인증번호를 보낸 이메일이 아닙니다."));
+                .orElseThrow(()->new UnAuthorizedAuthCodeException());
 
         if(!signUpNumber.getAuthenticateNumber().equals(reqVerifySignUpNumberDto.getAuthenticateNumber())){
-            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+            throw new IsNotEqualToAuthCodeException();
         }
 
         signUpNumberRepository.delete(signUpNumber);
@@ -65,7 +67,7 @@ public class AuthenticationEmailService {
         boolean result = userRepository.existsByEmailAndUserId(reqEmailFindPasswordDto.getEmail(), reqEmailFindPasswordDto.getUserId());
 
         if(!result){
-            throw new IllegalArgumentException("이메일과 아이디에 해당하는 사용자가 존재하지 않습니다.");
+            throw new NoExistUserAccountException();
         }
 
         String passwordCode = createFindPasswordCode();
@@ -79,10 +81,10 @@ public class AuthenticationEmailService {
     public void verifyEmailFindPasswordCode(ReqVerifyFindPasswordDto reqVerifyFindPasswordDto) {
         String id = FIND_PW_CODE_ID+reqVerifyFindPasswordDto.getEmail();
         FindPasswordCode passwordCode = findPasswordCodeRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("인증코드의 만료시간이 지났거나 인증코드를 보낸 이메일/아이디가 아닙니다."));
+                .orElseThrow(()->new UnAuthorizedAuthCodeException());
 
         if(!passwordCode.getFindPasswordCode().equals(reqVerifyFindPasswordDto.getTemporaryPassword())){
-            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+            throw new IsNotEqualToAuthCodeException();
         }
 
         findPasswordCodeRepository.delete(passwordCode);
@@ -126,6 +128,6 @@ public class AuthenticationEmailService {
         temporaryPassword.changePasswordCode(passwordCode); // 비밀번호 찾기 이메일 재전송의 경우
 
         findPasswordCodeRepository.save(temporaryPassword);
-        //logger.info("저장된 코드:"+findPasswordCodeRepository.findById(id).get().getFindPasswordCode());
+        //log.info("저장된 코드:"+findPasswordCodeRepository.findById(id).get().getFindPasswordCode());
     }
 }
