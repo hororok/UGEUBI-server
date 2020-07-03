@@ -79,7 +79,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -150,7 +150,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -220,7 +220,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -291,7 +291,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -361,7 +361,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -431,7 +431,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -500,7 +500,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -570,7 +570,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
@@ -638,7 +638,7 @@ public class MedicineController {
                 //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
-                jsonobj.put("item", itemArray);
+                jsonobj.put("items", itemArray);
                 return jsonobj.toString();
             }
             jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
