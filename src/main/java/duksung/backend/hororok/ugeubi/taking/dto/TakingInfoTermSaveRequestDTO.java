@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class TakingInfoTermSaveRequestDTO {
-
+    /*
     private Long taking_info_id;
     private Long user_id;
     private Long medicine_id;
@@ -44,5 +44,5 @@ public class TakingInfoTermSaveRequestDTO {
                 .taking_period(taking_period)
                 .taking_number(taking_number)
                 .build();
-    }
+    }*/
 }

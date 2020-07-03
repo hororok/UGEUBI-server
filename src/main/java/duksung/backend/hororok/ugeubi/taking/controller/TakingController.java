@@ -29,7 +29,7 @@ public class TakingController {
 
     /******TakingInfo******/
 
-
+    /*
     //복용약 등록 - 요일
     @PostMapping("/registerTakingInfo")
     public Long save(@RequestBody TakingInfoSaveRequestDTO requestDTO) {
@@ -40,7 +40,7 @@ public class TakingController {
     @PostMapping("/registerTakingInfoTerm")
     public Long saveTerm(@RequestBody TakingInfoTermSaveRequestDTO requestDTO) {
         return takingInfoService.saveTerm(requestDTO);
-    }
+    }*/
 
     //복용약 수정하기
     /*@PostMapping("/registerTakingInfo")
@@ -48,14 +48,13 @@ public class TakingController {
         return takingService.save(requestDTO);
     }*/
 
+    /*
     //사용자의 복용약 정보 가져오기
     @GetMapping("/getTakingInfo")
     public List<TakingInfoDay> findById(@RequestParam(value = "id") Long id) {
         return takingInfoService.findAllByid(id);
     }
 
-
-    /******TakingHistory******/
 
     //복용 기록 등록
     // @Scheduled(fixedRate = 1000) //매일 자정에
@@ -83,7 +82,7 @@ public class TakingController {
     @GetMapping("/getTakingHistory")
     public List<TakingHistory> findById(@RequestParam(value = "id") Long id, @RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         return takingHistoryService.findAllByIdAndDate(id, date);
-    }
+    }*/
 
 
 }

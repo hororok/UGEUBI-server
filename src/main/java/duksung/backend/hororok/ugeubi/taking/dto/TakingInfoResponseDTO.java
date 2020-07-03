@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter
 public class TakingInfoResponseDTO {
 
-
+    /*
     private Long taking_info_id;
     private Long user_id;
     private Long medicine_id;
@@ -20,13 +20,13 @@ public class TakingInfoResponseDTO {
     private boolean is_taken;
 
     public TakingInfoResponseDTO(TakingInfoDay entity){
-        this.medicine_id = entity.getMedicine_id();
-        this.medicine_name = entity.getMedicine_name();
+        this.medicine_id = entity.getMedicineId();
+        this.medicine_name = entity.getme();
         this.taking_time = entity.getTaking_time();
         this.taking_day = entity.getTaking_day();
         this.taking_period = entity.getTaking_period();
         this.taking_number = entity.getTaking_number();
         this.is_taken = entity.is_taken();
-    }
+    }*/
 
 }
