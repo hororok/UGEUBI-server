@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface TakingInfoDayRepository extends JpaRepository<TakingInfoDay,Long> {
-    @Query("select ti from TakingInfoDay ti where ti.user_id = ?1")
-    List<TakingInfoDay> findAllByid(Long user_id);
+    //@Query("select ti from TakingInfoDay ti where ti.user_id = ?1")
+    //List<TakingInfoDay> findAllByid(Long user_id);
 }
