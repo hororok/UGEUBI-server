@@ -1,6 +1,6 @@
 package duksung.backend.hororok.ugeubi.taking.dto;
 
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +34,8 @@ public class TakingInfoSaveRequestDTO {
         this.is_taken = false;
     }
 
-    public TakingInfo toEntity(){
-        return TakingInfo.builder()
+    public TakingInfoDay toEntity(){
+        return TakingInfoDay.builder()
                 .user_id(user_id)
                 .medicine_id(medicine_id)
                 .medicine_name(medicine_name)

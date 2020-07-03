@@ -1,11 +1,8 @@
 package duksung.backend.hororok.ugeubi.medicine.dto;
 
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor

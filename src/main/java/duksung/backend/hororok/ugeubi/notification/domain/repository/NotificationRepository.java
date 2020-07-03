@@ -1,7 +1,6 @@
 package duksung.backend.hororok.ugeubi.notification.domain.repository;
 
 import duksung.backend.hororok.ugeubi.notification.domain.entity.Notification;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

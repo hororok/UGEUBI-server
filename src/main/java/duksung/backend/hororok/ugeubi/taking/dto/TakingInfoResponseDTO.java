@@ -1,9 +1,7 @@
 package duksung.backend.hororok.ugeubi.taking.dto;
 
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
-import lombok.Builder;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Date;
 
@@ -21,7 +19,7 @@ public class TakingInfoResponseDTO {
     private int taking_number; //복용 개수
     private boolean is_taken;
 
-    public TakingInfoResponseDTO(TakingInfo entity){
+    public TakingInfoResponseDTO(TakingInfoDay entity){
         this.medicine_id = entity.getMedicine_id();
         this.medicine_name = entity.getMedicine_name();
         this.taking_time = entity.getTaking_time();

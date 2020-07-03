@@ -1,7 +1,7 @@
 package duksung.backend.hororok.ugeubi.taking.controller;
 
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoTermSaveRequestDTO;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class TakingController {
 
     //사용자의 복용약 정보 가져오기
     @GetMapping("/getTakingInfo")
-    public List<TakingInfo> findById(@RequestParam(value = "id") Long id) {
+    public List<TakingInfoDay> findById(@RequestParam(value = "id") Long id) {
         return takingInfoService.findAllByid(id);
     }
 

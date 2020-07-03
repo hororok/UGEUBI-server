@@ -1,6 +1,6 @@
 package duksung.backend.hororok.ugeubi.taking.service;
 
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoRepository;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoTermRepository;
 
@@ -29,8 +29,8 @@ public class TakingInfoService {
         return takingInfoTermRepository.save(requestDTO.toEntity()).getTaking_info_term_id();
     }
 
-    public List<TakingInfo> findAllByid(Long id) {
-        List<TakingInfo> entity = takingInfoRepository.findAllByid(id);
+    public List<TakingInfoDay> findAllByid(Long id) {
+        List<TakingInfoDay> entity = takingInfoRepository.findAllByid(id);
              //   .orElseThrow(() -> new IllegalArgumentException("복용약이 없습니다. id="+id));
        // return new TakingInfoResponseDTO(entity);
         return entity;
