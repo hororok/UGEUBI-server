@@ -64,31 +64,33 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
 
-
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
 
@@ -133,29 +135,33 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
     //[임부금기] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -199,29 +205,33 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
 
@@ -266,30 +276,35 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
+
     //[투여기간주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getMdctnPdAtentInfoList")
     public String getMdctnPdAtentInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
@@ -331,29 +346,33 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
     //[노인주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -397,29 +416,33 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
     //[효능군중복] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -459,33 +482,36 @@ public class MedicineController {
         }
         rd.close();
         conn.disconnect();
-
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 
     //[서방형 제제 분할주의] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
@@ -529,31 +555,34 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
-    }
 
+        return jsonobj.toString();
+    }
     //[DUR품목정보 조회] DUR정보 API RequestParam : 품목명(itemName), 페이지번호(pageNo)
     @PostMapping("/DURPrdlstInfoService/getDurPrdlstInfoList")
     public String getDurPrdlstInfoList(@RequestBody MedicineDURRequestDTO requestDTO)throws IOException {
@@ -594,28 +623,32 @@ public class MedicineController {
         //xml to json
         JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
         JSONObject jsonBody = xmlJSONObj.getJSONObject("response").getJSONObject("body");
+        JSONObject jsonobj = new JSONObject();
+        JSONArray itemArray = new JSONArray();
+
+        //totalCount
+        jsonobj.put("totalCount", jsonBody.get("totalCount"));
 
         //결과값이 있는 경우
         if(jsonBody.get("items") != "") {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             try {
                 //약이 하나 검색될 경우(item값이 한 개일 경우 에러 발생)
                 itemArray = jsonBody.getJSONObject("items").getJSONArray("item");
             } catch(JSONException e) {
+                //결과값이 한 개일 경우
                 JSONObject itemObj = jsonBody.getJSONObject("items").getJSONObject("item");
                 itemArray.put(itemObj);
                 jsonobj.put("item", itemArray);
                 return jsonobj.toString();
             }
-            return jsonBody.getJSONObject("items").toString();
+            jsonobj.put("items",jsonBody.getJSONObject("items").getJSONArray("item")); //결과값이 어라개인 경우
         }
+
         //결과값이 없는 경우
         else {
-            JSONObject jsonobj = new JSONObject();
-            JSONArray itemArray = new JSONArray();
             jsonobj.put("item", itemArray);
-            return jsonobj.toString();
         }
+
+        return jsonobj.toString();
     }
 }
