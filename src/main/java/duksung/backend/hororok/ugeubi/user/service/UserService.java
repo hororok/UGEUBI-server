@@ -5,13 +5,11 @@ import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.common.util.ReplaceString;
 import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.domain.repository.UserRepository;
-import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqModifyPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.*;
 import lombok.RequiredArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,8 +57,8 @@ public class UserService {
                 .available(!isExistUserId).build();
     }
 
-    public ResFindIdDto findForgottenUserId(ReqFindIdDto reqFindIdDto) {
-        User user = userRepository.findByEmailAndUserName(reqFindIdDto.getEmail(), reqFindIdDto.getUserName())
+    public ResFindIdDto findForgottenUserId(String userName, String email) {
+        User user = userRepository.findByEmailAndUserName(email, userName)
                 .orElseThrow(()-> new IllegalArgumentException("해당 이메일과 유저 이름에 해당하는 계정이 존재하지 않습니다."));
 
         String changedId = ReplaceString.changeAsterisk(user.getUserId());

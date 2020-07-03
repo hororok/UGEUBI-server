@@ -1,6 +1,5 @@
 package duksung.backend.hororok.ugeubi.user.controller;
 
-import duksung.backend.hororok.ugeubi.user.dto.request.ReqFindIdDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqModifyPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
@@ -53,12 +52,8 @@ public class UserController {
     }
 
     @GetMapping("/users/find-id")
-    public ResponseEntity<ResFindIdDto> findForgottenUserId(@RequestBody @Valid ReqFindIdDto reqFindIdDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findForgottenUserId(reqFindIdDto));
+    public ResponseEntity<ResFindIdDto> findForgottenUserId(@RequestParam("userName") String userName, @RequestParam("email") String email){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findForgottenUserId(userName, email));
     }
 
     @PatchMapping("/users/password")
