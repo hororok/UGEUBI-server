@@ -9,6 +9,9 @@ import duksung.backend.hororok.ugeubi.user.dto.request.ReqModifyPasswordDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignInDto;
 import duksung.backend.hororok.ugeubi.user.dto.request.ReqSignUpDto;
 import duksung.backend.hororok.ugeubi.user.dto.response.*;
+import duksung.backend.hororok.ugeubi.user.exception.ExistUserIdException;
+import duksung.backend.hororok.ugeubi.user.exception.IsNotEqualToPasswordException;
+import duksung.backend.hororok.ugeubi.user.exception.NoExistUserAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +29,7 @@ public class UserService {
         User user = getUserByUserId(reqSignInDto.getUserId());
 
         if(user.isNotEqualToPassword(reqSignInDto.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않음");
+            throw new IsNotEqualToPasswordException();
         }
 
         UserInfo userInfo = createUserInfo(user);
@@ -42,7 +45,7 @@ public class UserService {
 
         boolean isExistUserId = userRepository.existsByUserId(reqSignUpDto.getUserId());
         if(isExistUserId){
-            throw new IllegalArgumentException("중복되는 아이디");
+            throw new ExistUserIdException();
         }
 
         userRepository.save(reqSignUpDto.toEntity());
@@ -59,7 +62,7 @@ public class UserService {
 
     public ResFindIdDto findForgottenUserId(String userName, String email) {
         User user = userRepository.findByEmailAndUserName(email, userName)
-                .orElseThrow(()-> new IllegalArgumentException("해당 이메일과 유저 이름에 해당하는 계정이 존재하지 않습니다."));
+                .orElseThrow(()-> new NoExistUserAccountException());
 
         String changedId = ReplaceString.changeAsterisk(user.getUserId());
 
@@ -69,7 +72,7 @@ public class UserService {
     @Transactional
     public void modifyUserPassword(ReqModifyPasswordDto reqModifyPasswordDto) {
         User user = userRepository.findByUserId(reqModifyPasswordDto.getUserId())
-                .orElseThrow(()-> new IllegalArgumentException("아이디에 해당하는 사용자가 없습니다."));
+                .orElseThrow(()-> new NoExistUserAccountException());
 
         user.modifyPassword(reqModifyPasswordDto.getPassword());
     }
