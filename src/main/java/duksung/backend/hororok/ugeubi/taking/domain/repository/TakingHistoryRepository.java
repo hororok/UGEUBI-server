@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface TakingHistoryRepository extends JpaRepository<TakingHistory,Long> {
     @Query("select th from TakingHistory th where th.user_id = ?1 and taking_history_date = ?2")
-    List<TakingHistory> findAllByIdAndDate(Long user_id, Date date);
+    List<TakingHistory> findAllByIdAndDate(Long user_id, String date);
 }

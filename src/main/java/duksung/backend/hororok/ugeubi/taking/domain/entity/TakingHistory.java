@@ -20,13 +20,13 @@ public class TakingHistory extends BaseTimeEntity {
 
     private Long taking_info_id;
 
-    @Temporal(TemporalType.DATE)
-    private Date taking_history_date;
+    //@Temporal(TemporalType.DATE)
+    private String taking_history_date;
 
     private boolean taking_history_is_taken;
 
     @Builder
-    private TakingHistory(Long user_id, Long taking_info_id, Date taking_history_date, boolean taking_history_is_taken ){
+    private TakingHistory(Long user_id, Long taking_info_id, String taking_history_date, boolean taking_history_is_taken ){
         this.user_id = user_id;
         this.taking_info_id = taking_info_id;
         this.taking_history_date = taking_history_date;

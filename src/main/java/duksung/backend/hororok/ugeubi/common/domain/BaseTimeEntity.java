@@ -19,5 +19,4 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime updatedTime;
 
-    public abstract Long getTaking_info_id();
 }

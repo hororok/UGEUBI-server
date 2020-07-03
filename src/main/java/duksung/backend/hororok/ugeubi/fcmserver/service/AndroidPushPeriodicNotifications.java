@@ -1,7 +1,7 @@
 package duksung.backend.hororok.ugeubi.fcmserver.service;
 
 import duksung.backend.hororok.ugeubi.taking.controller.TakingController;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfo;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.service.TakingInfoService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;

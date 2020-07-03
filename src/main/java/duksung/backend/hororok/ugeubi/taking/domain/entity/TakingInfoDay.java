@@ -45,4 +45,5 @@ public class TakingInfoDay extends BaseTimeEntity {
         this.takingDayOfWeek=takingDayOfWeek;
         this.takingNumber=takingNumber;
     }
+
 }

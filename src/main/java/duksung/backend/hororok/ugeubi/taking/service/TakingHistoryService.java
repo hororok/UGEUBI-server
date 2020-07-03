@@ -24,7 +24,7 @@ public class TakingHistoryService {
     }
 
     //사용자의 날짜별 복용약 정보 가져오기
-    public List<TakingHistory> findAllByIdAndDate(Long id, Date date) {
+    public List<TakingHistory> findAllByIdAndDate(Long id, String date) {
         List<TakingHistory> entity = takingHistoryRepository.findAllByIdAndDate(id, date);
         return entity;
     }

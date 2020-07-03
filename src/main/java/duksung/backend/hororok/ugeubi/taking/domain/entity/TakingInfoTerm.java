@@ -45,4 +45,5 @@ public class TakingInfoTerm extends BaseTimeEntity {
         this.takingTime=takingTime;
         this.takingNumber=takingNumber;
     }
+
 }

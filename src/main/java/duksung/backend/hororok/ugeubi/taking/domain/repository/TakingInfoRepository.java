@@ -9,10 +9,10 @@ import java.util.List;
 
 @Repository
 public interface TakingInfoRepository extends JpaRepository<TakingInfoDay,Long> {
-    @Query("select ti from TakingInfoDay ti where ti.user_id = ?1")
+    @Query("select ti from TakingInfoDay ti where ti.userId = ?1")
     List<TakingInfoDay> findAllByid(Long user_id);
 
-    @Query("select ti from TakingInfo ti where ti.taking_day = ?1")
-    List<TakingInfo> findAllByTaking_day(String taking_day);
+    @Query("select ti from TakingInfoDay ti where ti.takingDayOfWeek = ?1")
+    List<TakingInfoDay> findByTaking_day(String taking_day);
 
 }
