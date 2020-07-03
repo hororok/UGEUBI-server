@@ -18,7 +18,7 @@ public class TakingInfoService {
 
     private final TakingInfoRepository takingInfoRepository;
     private final TakingInfoTermRepository takingInfoTermRepository;
-
+    /*
     @Transactional
     public Long save(TakingInfoSaveRequestDTO requestDTO){
          return takingInfoRepository.save(requestDTO.toEntity()).getTaking_info_id();
@@ -34,5 +34,5 @@ public class TakingInfoService {
              //   .orElseThrow(() -> new IllegalArgumentException("복용약이 없습니다. id="+id));
        // return new TakingInfoResponseDTO(entity);
         return entity;
-    }
+    }*/
 }
