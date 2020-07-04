@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +77,8 @@ public class FirstAidKitService {
     public ResSingleMedicineDto getSingleMedicine(String medicineId, UserInfo userInfo) {
         Long userId = userInfo.getId();
         List<TakingInfoDay> takingInfoDaysList;
-        List<String> takingDayOfWeekList = null;
-        List<String> takingTimeList = null;
+        List<String> takingDayOfWeekList;
+        List<String> takingTimeList;
         TakingInfoDayDto takingInfoDayDto = null;
 
         Medicine medicine = medicineRepository.findByUserIdAndId(userId, Long.parseLong(medicineId))
@@ -85,6 +86,9 @@ public class FirstAidKitService {
 
         if(medicine.getIsTaken()){ //복용약의 경우
             takingInfoDaysList = takingInfoDayRepository.findAllByMedicineIdAndUserId(medicine.getId(), userId);
+            takingDayOfWeekList = new ArrayList<>();
+            takingTimeList = new ArrayList<>();
+
             takingInfoDaysList.stream().forEach(takingInfoDay -> {
                 takingDayOfWeekList.add(takingInfoDay.getTakingDayOfWeek());
                 takingTimeList.add(takingInfoDay.getTakingTime());
