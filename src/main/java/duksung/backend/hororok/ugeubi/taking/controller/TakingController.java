@@ -33,8 +33,25 @@ public class TakingController {
 
     //복용약 등록 - 요일
     @PostMapping("/registerTakingInfo")
-    public Long save(@RequestBody TakingInfoSaveRequestDTO requestDTO) {
-        return takingInfoService.save(requestDTO);
+    public Long saveTakingInfo(@RequestBody TakingInfoSaveRequestDTO requestDTO, @LoginUserInfo UserInfo userInfo) {
+
+        Long takingInfoId = takingInfoService.save(requestDTO);
+
+        //복용약의 등록 요일이 오늘이면 TakingHistory에 등록
+        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+        // 1     2     3     4     5     6     7
+        final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
+        String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]; //요일
+
+        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
+        String current_day = df.format(oCalendar.getTime()); //오늘 날짜
+
+        if((requestDTO.getTakingDayOfWeek()).equals(today)){
+            TakingHistorySaveRequestDTO takingHistorySaveRequestDTO = new TakingHistorySaveRequestDTO(userInfo.getId(),takingInfoId, current_day,false);
+            takingHistoryService.save(takingHistorySaveRequestDTO);
+        }
+
+        return takingInfoId;
     }
 /*
     //복용약 등록 - 간격
@@ -68,7 +85,9 @@ public class TakingController {
         // 1     2     3     4     5     6     7
         final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
         String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1];
-        List<TakingInfoDay> takingInfoDayList = takingInfoService.findByTaking_day(week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]);
+
+        //오늘 먹는 약 정보 리스트 가져오기
+        List<TakingInfoDay> takingInfoDayList = takingInfoService.findByTaking_day(today);
 
         SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
         String current_day = df.format(oCalendar.getTime());
@@ -83,10 +102,10 @@ public class TakingController {
     }
 
     //복용 기록 등록
-  /*  @PostMapping("/registerTakingHistory")
-    public Long save(@RequestBody TakingHistorySaveRequestDTO requestDTO) {
+    @PostMapping("/saveTakingHistory")
+    public Long saveTakingHistory(@RequestBody TakingHistorySaveRequestDTO requestDTO) {
         return takingHistoryService.save(requestDTO);
-    }*/
+    }
 
 
     //사용자의 날짜별 복용 정보 가져오기
