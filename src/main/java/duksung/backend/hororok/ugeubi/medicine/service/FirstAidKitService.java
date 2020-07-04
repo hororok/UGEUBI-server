@@ -91,7 +91,7 @@ public class FirstAidKitService {
                 takingTimeSet.add(takingInfoDay.getTakingTime());
             });
             takingInfoDayDto = TakingInfoDayDto.builder()
-                    .takingTime(new ArrayList<>(takingDayOfWeekSet))
+                    .takingTime(new ArrayList<>(takingTimeSet))
                     .takingDayOfWeek(new ArrayList<>(takingDayOfWeekSet))
                     .takingNumber(takingInfoDaysList.get(0).getTakingNumber())
                     .build();
