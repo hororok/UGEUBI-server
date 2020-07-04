@@ -1,9 +1,12 @@
 package duksung.backend.hororok.ugeubi.taking.service;
 
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
+import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingHistoryRepository;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 //import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
+import duksung.backend.hororok.ugeubi.taking.dto.TakingHistoryUpdateIstakenRequestDTO;
+import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoHistoryResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +27,14 @@ public class TakingHistoryService {
     }
 
     //사용자의 날짜별 복용약 정보 가져오기
-    public List<TakingHistory> findAllByIdAndDate(Long id, String date) {
-        List<TakingHistory> entity = takingHistoryRepository.findAllByIdAndDate(id, date);
+    @Transactional
+    public List<TakingInfoHistoryResponseDTO> findAllByIdAndDate(Long id, String date) {
+        List<TakingInfoHistoryResponseDTO> entity = takingHistoryRepository.findAllByIdAndDate(id, date);
         return entity;
     }
+
+    public void updateIsTaken(TakingHistoryUpdateIstakenRequestDTO requestDTO) {
+        takingHistoryRepository.updateIsTaken(requestDTO.getTaking_history_id(), requestDTO.isTaking_history_is_taken());
+    }
+
 }

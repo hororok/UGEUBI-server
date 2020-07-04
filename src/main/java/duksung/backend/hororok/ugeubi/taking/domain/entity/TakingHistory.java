@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.taking.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class TakingHistory extends BaseTimeEntity {
     private String taking_history_date;
 
     private boolean taking_history_is_taken;
+
 
     @Builder
     private TakingHistory(Long user_id, Long taking_info_id, String taking_history_date, boolean taking_history_is_taken ){

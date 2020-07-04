@@ -1,11 +1,11 @@
 package duksung.backend.hororok.ugeubi.taking.controller;
 
+import duksung.backend.hororok.ugeubi.common.auth.LoginUserInfo;
+import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
-import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
+import duksung.backend.hororok.ugeubi.taking.dto.*;
 
-import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoTermSaveRequestDTO;
-import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
 import duksung.backend.hororok.ugeubi.taking.service.TakingHistoryService;
 import duksung.backend.hororok.ugeubi.taking.service.TakingInfoService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +57,8 @@ public class TakingController {
     }*/
 
 
+    /******TakingHistory******/
+
     //복용 기록 등록
     @Scheduled(cron="0 0 0 * * ? ") //자정마다 실행
     @PostMapping("/registerTakingHistory")
@@ -89,8 +91,14 @@ public class TakingController {
 
     //사용자의 날짜별 복용 정보 가져오기
     @GetMapping("/getTakingHistory")
-    public List<TakingHistory> findById(@RequestParam(value = "id") Long id, @RequestParam(value = "date") String date) {
-        return takingHistoryService.findAllByIdAndDate(id, date);
+    public List<TakingInfoHistoryResponseDTO> findAllByIdAndDate(@RequestParam(value = "date") String date, @LoginUserInfo UserInfo userInfo) {
+        return takingHistoryService.findAllByIdAndDate(userInfo.getId(), date);
+    }
+
+    //누르면 boolean값 변경
+    @PostMapping("/updateIsTaken")
+    public void updateIsTaken(@RequestBody TakingHistoryUpdateIstakenRequestDTO requestDTO) {
+        takingHistoryService.updateIsTaken(requestDTO); //taking_history_id, 날짜, istaken
     }
 
 }
