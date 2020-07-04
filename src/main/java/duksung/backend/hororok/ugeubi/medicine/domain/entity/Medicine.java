@@ -1,6 +1,7 @@
 package duksung.backend.hororok.ugeubi.medicine.domain.entity;
 
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
+import duksung.backend.hororok.ugeubi.medicine.dto.response.ResListItemMedicineDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "medicines")
 @Entity
-public class Medicine extends BaseTimeEntity {
+public class Medicine extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,19 +31,35 @@ public class Medicine extends BaseTimeEntity {
 
     private Boolean isTaken; // 복용 유무
 
+    private String memo;
+
     @Builder
-    private Medicine(Long userId, String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken){
+    private Medicine(Long userId, String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken, String memo){
         this.userId=userId;
         this.medicineName=medicineName;
         this.medicineType=medicineType;
         this.medicineValidTerm=medicineValidTerm;
         this.isTaken=isTaken;
+        this.memo=memo;
     }
 
-    public void modify(String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken){
+    public void modify(String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken, String memo){
         this.medicineName=medicineName;
         this.medicineType=medicineType;
         this.medicineValidTerm=medicineValidTerm;
         this.isTaken=isTaken;
+        this.memo=memo;
+    }
+
+    public ResListItemMedicineDto toSingleMedicineDto() {
+
+        return ResListItemMedicineDto.builder()
+                .medicineId(id)
+                .medicineName(medicineName)
+                .medicineType(medicineType)
+                .medicineValidTerm(medicineValidTerm)
+                .isTaken(isTaken)
+                .memo(memo)
+                .build();
     }
 }
