@@ -108,4 +108,18 @@ public class FirstAidKitService {
                 .build();
 
     }
+
+    @Transactional
+    public void deleteMedicine(Long medicineId, UserInfo userInfo) {
+        Long userId = userInfo.getId();
+
+        Medicine medicine = medicineRepository.findByUserIdAndId(userId,medicineId)
+                .orElseThrow(() -> new NoExistMedicineException());
+
+        if(medicine.getIsTaken()){//복용약의 경우
+            List<TakingInfoDay> list = takingInfoDayRepository.findAllByMedicineIdAndUserId(medicineId,userId);
+            list.stream().forEach(takingInfoDay -> takingInfoDayRepository.delete(takingInfoDay));
+        }
+        medicineRepository.delete(medicine);
+    }
 }

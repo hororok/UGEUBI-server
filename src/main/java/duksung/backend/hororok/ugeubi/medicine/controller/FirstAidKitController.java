@@ -46,13 +46,15 @@ public class FirstAidKitController {
     /*
     @PatchMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
     public ResponseEntity<ResMedicine>
+    */
 
     @DeleteMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
-    public ResponseEntity<Void> deleteMedicine(@PathVariable("medicine-id") Long medicineId){
+    public ResponseEntity<Void> deleteMedicine(@PathVariable("medicine-id") Long medicineId,
+                                               @LoginUserInfo UserInfo userInfo){
 
-        firstAidKitService.deleteMedicine(medicineId);
+        firstAidKitService.deleteMedicine(medicineId, userInfo);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
+    }
 
 }
