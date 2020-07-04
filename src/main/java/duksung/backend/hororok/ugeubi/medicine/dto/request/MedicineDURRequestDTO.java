@@ -1,4 +1,4 @@
-package duksung.backend.hororok.ugeubi.medicine.dto;
+package duksung.backend.hororok.ugeubi.medicine.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

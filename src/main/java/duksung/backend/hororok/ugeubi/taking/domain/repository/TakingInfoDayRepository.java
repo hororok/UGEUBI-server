@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface TakingInfoRepository extends JpaRepository<TakingInfoDay,Long> {
+public interface TakingInfoDayRepository extends JpaRepository<TakingInfoDay,Long> {
     @Query("select ti from TakingInfoDay ti where ti.userId = ?1")
     List<TakingInfoDay> findAllByid(Long user_id);
 

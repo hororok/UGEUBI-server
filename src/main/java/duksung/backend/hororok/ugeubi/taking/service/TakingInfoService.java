@@ -1,7 +1,7 @@
 package duksung.backend.hororok.ugeubi.taking.service;
 
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
-import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoRepository;
+import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoDayRepository;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoTermRepository;
 
 import duksung.backend.hororok.ugeubi.taking.dto.TakingInfoSaveRequestDTO;
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class TakingInfoService {
 
-    private final TakingInfoRepository takingInfoRepository;
+    private final TakingInfoDayRepository takingInfoRepository;
     private final TakingInfoTermRepository takingInfoTermRepository;
 
     @Transactional
