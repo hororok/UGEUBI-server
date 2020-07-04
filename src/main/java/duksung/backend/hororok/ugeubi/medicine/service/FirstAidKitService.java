@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -77,8 +74,8 @@ public class FirstAidKitService {
     public ResSingleMedicineDto getSingleMedicine(String medicineId, UserInfo userInfo) {
         Long userId = userInfo.getId();
         List<TakingInfoDay> takingInfoDaysList;
-        List<String> takingDayOfWeekList;
-        List<String> takingTimeList;
+        Set<String> takingDayOfWeekSet;
+        Set<String> takingTimeSet;
         TakingInfoDayDto takingInfoDayDto = null;
 
         Medicine medicine = medicineRepository.findByUserIdAndId(userId, Long.parseLong(medicineId))
@@ -86,16 +83,16 @@ public class FirstAidKitService {
 
         if(medicine.getIsTaken()){ //복용약의 경우
             takingInfoDaysList = takingInfoDayRepository.findAllByMedicineIdAndUserId(medicine.getId(), userId);
-            takingDayOfWeekList = new ArrayList<>();
-            takingTimeList = new ArrayList<>();
+            takingDayOfWeekSet = new HashSet<>();
+            takingTimeSet = new HashSet<>();
 
             takingInfoDaysList.stream().forEach(takingInfoDay -> {
-                takingDayOfWeekList.add(takingInfoDay.getTakingDayOfWeek());
-                takingTimeList.add(takingInfoDay.getTakingTime());
+                takingDayOfWeekSet.add(takingInfoDay.getTakingDayOfWeek());
+                takingTimeSet.add(takingInfoDay.getTakingTime());
             });
             takingInfoDayDto = TakingInfoDayDto.builder()
-                    .takingTime(takingTimeList)
-                    .takingDayOfWeek(takingDayOfWeekList)
+                    .takingTime(new ArrayList<>(takingDayOfWeekSet))
+                    .takingDayOfWeek(new ArrayList<>(takingDayOfWeekSet))
                     .takingNumber(takingInfoDaysList.get(0).getTakingNumber())
                     .build();
         }
