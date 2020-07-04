@@ -10,8 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface TakingInfoDayRepository extends JpaRepository<TakingInfoDay,Long> {
-    //@Query("select ti from TakingInfoDay ti where ti.user_id = ?1")
-    //List<TakingInfoDay> findAllByid(Long user_id);
+    @Query("select ti from TakingInfoDay ti where ti.userId = ?1")
+    List<TakingInfoDay> findAllByid(Long user_id);
 
-    List<TakingInfoDay> findAllByMedicineIdAndUserId(Long medicineId, Long userId);
+    @Query("select ti from TakingInfoDay ti where ti.takingDayOfWeek = ?1")
+    List<TakingInfoDay> findByTaking_day(String taking_day);
+
 }

@@ -10,7 +10,9 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class TakingInfoTermSaveRequestDTO {
-    /*
+    /*public Object toEntity() {
+    }
+
     private Long taking_info_id;
     private Long user_id;
     private Long medicine_id;
