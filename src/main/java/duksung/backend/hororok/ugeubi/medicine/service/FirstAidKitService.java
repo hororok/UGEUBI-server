@@ -4,9 +4,9 @@ import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
 import duksung.backend.hororok.ugeubi.medicine.domain.entity.Medicine;
 import duksung.backend.hororok.ugeubi.medicine.domain.repository.MedicineRepository;
-import duksung.backend.hororok.ugeubi.medicine.dto.request.ReqAddMedicineDto;
+import duksung.backend.hororok.ugeubi.medicine.dto.request.ReqMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.TakingInfoDayDto;
-import duksung.backend.hororok.ugeubi.medicine.dto.response.ResAddMedicineDto;
+import duksung.backend.hororok.ugeubi.medicine.dto.response.ResMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.response.ResMedicineListDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.response.ResSingleMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.exception.NoExistMedicineException;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,34 +27,34 @@ public class FirstAidKitService {
     private final TakingInfoDayRepository takingInfoDayRepository;
 
     @Transactional
-    public ResAddMedicineDto addMedicine(ReqAddMedicineDto reqAddMedicineDto, UserInfo userInfo) {
+    public ResMedicineDto addMedicine(ReqMedicineDto reqMedicineDto, UserInfo userInfo) {
 
-        boolean isTaken = reqAddMedicineDto.getIsTaken();
+        boolean isTaken = reqMedicineDto.getIsTaken();
         Long userId = userInfo.getId();
 
         Medicine medicine = Medicine.builder()
                 .userId(userId)
-                .medicineName(reqAddMedicineDto.getMedicineName())
-                .medicineType(reqAddMedicineDto.getMedicineType())
-                .medicineValidTerm(reqAddMedicineDto.getMedicineValidTerm())
+                .medicineName(reqMedicineDto.getMedicineName())
+                .medicineType(reqMedicineDto.getMedicineType())
+                .medicineValidTerm(reqMedicineDto.getMedicineValidTerm())
                 .isTaken(isTaken)
-                .memo(Optional.ofNullable(reqAddMedicineDto.getMemo()).orElse(""))
+                .memo(Optional.ofNullable(reqMedicineDto.getMemo()).orElse(""))
                 .build();
         Medicine savedMedicine = medicineRepository.save(medicine);
 
-        if(isTaken){ //복용약의 경우
-            List<TakingInfoDay> list = reqAddMedicineDto.getTakingInfoDayDto().toEntities(userId, savedMedicine.getId());
+        if(isTaken) { //복용약의 경우
+            List<TakingInfoDay> list = reqMedicineDto.getTakingInfoDayDto().toEntities(userId, savedMedicine);
             list.stream().forEach(takingInfoDay -> takingInfoDayRepository.save(takingInfoDay));
         }
 
-        return ResAddMedicineDto.builder()
+        return ResMedicineDto.builder()
                 .medicineId(savedMedicine.getId())
                 .medicineName(savedMedicine.getMedicineName())
                 .medicineType(savedMedicine.getMedicineType().getTypeDescription())
                 .isTaken(savedMedicine.getIsTaken())
                 .medicineValidTerm(savedMedicine.getMedicineValidTerm())
                 .memo(savedMedicine.getMemo())
-                .takingInfoDayDto(Optional.ofNullable(reqAddMedicineDto.getTakingInfoDayDto())
+                .takingInfoDayDto(Optional.ofNullable(reqMedicineDto.getTakingInfoDayDto())
                                             .orElse(new TakingInfoDayDto()))
                 .build();
     }
@@ -122,4 +121,12 @@ public class FirstAidKitService {
         }
         medicineRepository.delete(medicine);
     }
+
+    /*@Transactional
+    public ResMedicineDto modifyMedicine(String medicineId, UserInfo userInfo, ReqMedicineDto reqMedicineDto) {
+        Medicine medicine = medicineRepository.findByUserIdAndId(userInfo.getId(), Long.parseLong(medicineId))
+                .orElseThrow(()-> new NoExistMedicineException());
+
+        //medicine.modify(reqMedicineDto.getMedicineName(), reqMedicineDto.);
+    }*/
 }

@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.medicine.dto;
 
+import duksung.backend.hororok.ugeubi.medicine.domain.entity.Medicine;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class TakingInfoDayDto {
 
     private Integer takingNumber; // 복용 개수
 
-    public List<TakingInfoDay> toEntities(Long userId, Long medicineId) {
+    public List<TakingInfoDay> toEntities(Long userId, Medicine medicine) {
         List<TakingInfoDay> list = new ArrayList<>();
 
         for(String time : takingTime){
@@ -26,7 +27,8 @@ public class TakingInfoDayDto {
                 TakingInfoDay takingInfoDay =
                         TakingInfoDay.builder()
                         .userId(userId)
-                        .medicineId(medicineId)
+                        .medicineId(medicine.getId())
+                        .medicineName(medicine.getMedicineName())
                         .takingTime(time)
                         .takingDayOfWeek(day)
                         .takingNumber(takingNumber)

@@ -2,12 +2,11 @@ package duksung.backend.hororok.ugeubi.medicine.controller;
 
 import duksung.backend.hororok.ugeubi.common.auth.LoginUserInfo;
 import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
-import duksung.backend.hororok.ugeubi.medicine.dto.request.ReqAddMedicineDto;
-import duksung.backend.hororok.ugeubi.medicine.dto.response.ResAddMedicineDto;
+import duksung.backend.hororok.ugeubi.medicine.dto.request.ReqMedicineDto;
+import duksung.backend.hororok.ugeubi.medicine.dto.response.ResMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.response.ResMedicineListDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.response.ResSingleMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.service.FirstAidKitService;
-import duksung.backend.hororok.ugeubi.user.domain.entity.User;
 import duksung.backend.hororok.ugeubi.user.exception.RequestWrongFieldException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,13 +28,13 @@ public class FirstAidKitController {
     }
 
     @PostMapping("/first-aid-kit/medicines")
-    public ResponseEntity<ResAddMedicineDto> addMedicine(@RequestBody @Valid ReqAddMedicineDto reqAddMedicineDto,
-                                                         @LoginUserInfo UserInfo userInfo,
-                                                         BindingResult bindingResult){
+    public ResponseEntity<ResMedicineDto> addMedicine(@RequestBody @Valid ReqMedicineDto reqMedicineDto,
+                                                      @LoginUserInfo UserInfo userInfo,
+                                                      BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new RequestWrongFieldException();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.addMedicine(reqAddMedicineDto,userInfo));
+        return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.addMedicine(reqMedicineDto,userInfo));
     }
 
     @GetMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
@@ -43,10 +42,14 @@ public class FirstAidKitController {
                                                                   @LoginUserInfo UserInfo userInfo){
         return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.getSingleMedicine(medicineId, userInfo));
     }
-    /*
-    @PatchMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
-    public ResponseEntity<ResMedicine>
-    */
+
+    /*@PatchMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
+    public ResponseEntity<ResMedicineDto> modifyMedicine(@PathVariable("medicine-id") String medicineId,
+                                                            @LoginUserInfo UserInfo userInfo,
+                                                            @RequestBody @Valid ReqMedicineDto reqMedicineDto){
+
+        return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.modifyMedicine(medicineId, userInfo, reqMedicineDto));
+    }*/
 
     @DeleteMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
     public ResponseEntity<Void> deleteMedicine(@PathVariable("medicine-id") Long medicineId,

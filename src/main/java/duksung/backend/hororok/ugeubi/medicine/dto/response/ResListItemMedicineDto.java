@@ -43,7 +43,9 @@ public class ResListItemMedicineDto {
             long remainedMillis = medicineValidTerm.getTime()-today.getTime();
             long remainDays = remainedMillis / (24*60*60*1000);
             return remainDays<=5 ? true : false; //유통기한 5일 이하로 남은 경우 true
+        } else {
+            return true;
         }
-        return false;
+
     }
 }

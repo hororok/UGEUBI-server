@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqAddMedicineDto {
+public class ReqMedicineDto {
     @NotNull
     private String medicineName;
 

@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.util.Date;
 
 @Getter
-public class ResAddMedicineDto {
+public class ResMedicineDto {
 
     private Long medicineId;
 
@@ -26,8 +26,8 @@ public class ResAddMedicineDto {
     private TakingInfoDayDto takingInfo;
 
     @Builder
-    public ResAddMedicineDto(Long medicineId, String medicineName, String medicineType, Date medicineValidTerm,
-                             Boolean isTaken, String memo, TakingInfoDayDto takingInfoDayDto){
+    public ResMedicineDto(Long medicineId, String medicineName, String medicineType, Date medicineValidTerm,
+                          Boolean isTaken, String memo, TakingInfoDayDto takingInfoDayDto){
         this.medicineId=medicineId;
         this.medicineName=medicineName;
         this.medicineType=medicineType;
