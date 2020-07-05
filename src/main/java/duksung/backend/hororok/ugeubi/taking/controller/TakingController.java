@@ -32,7 +32,7 @@ public class TakingController {
 
 
     //복용약 등록 - 요일
-    @PostMapping("/registerTakingInfo")
+    /*@PostMapping("/registerTakingInfo")
     public Long saveTakingInfo(@RequestBody TakingInfoSaveRequestDTO requestDTO, @LoginUserInfo UserInfo userInfo) {
 
         Long takingInfoId = takingInfoService.save(requestDTO);
@@ -52,7 +52,7 @@ public class TakingController {
         }
 
         return takingInfoId;
-    }
+    }*/
 /*
     //복용약 등록 - 간격
     @PostMapping("/registerTakingInfoTerm")

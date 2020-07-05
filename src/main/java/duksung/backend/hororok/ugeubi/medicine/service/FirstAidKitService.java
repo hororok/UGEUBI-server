@@ -11,12 +11,15 @@ import duksung.backend.hororok.ugeubi.medicine.dto.response.ResMedicineListDto;
 import duksung.backend.hororok.ugeubi.medicine.dto.response.ResSingleMedicineDto;
 import duksung.backend.hororok.ugeubi.medicine.exception.NoExistMedicineException;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
+import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingHistoryRepository;
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoDayRepository;
+import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,11 +29,13 @@ public class FirstAidKitService {
 
     private final MedicineRepository medicineRepository;
     private final TakingInfoDayRepository takingInfoDayRepository;
+    private final TakingHistoryRepository takingHistoryRepository;
 
     @Transactional
     public ResAddMedicineDto addMedicine(ReqAddMedicineDto reqAddMedicineDto, UserInfo userInfo) {
 
         boolean isTaken = reqAddMedicineDto.getIsTaken();
+
         Long userId = userInfo.getId();
 
         Medicine medicine = Medicine.builder()
@@ -43,9 +48,30 @@ public class FirstAidKitService {
                 .build();
         Medicine savedMedicine = medicineRepository.save(medicine);
 
+        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+        // 1     2     3     4     5     6     7
+        final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
+        String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]; //요일
+
+        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
+        String current_day = df.format(oCalendar.getTime()); //오늘 날짜
+
         if(isTaken){ //복용약의 경우
             List<TakingInfoDay> list = reqAddMedicineDto.getTakingInfoDayDto().toEntities(userId, savedMedicine.getId());
-            list.stream().forEach(takingInfoDay -> takingInfoDayRepository.save(takingInfoDay));
+            list.stream().forEach(takingInfoDay -> {
+                //takingInfo에 저장
+                Long takingInfoId = (takingInfoDayRepository.save(takingInfoDay)).getId();
+
+                //복용약의 등록 요일이 오늘이면 TakingHistory에 등록
+                if((takingInfoDay.getTakingDayOfWeek()).equals(today)){
+                    TakingHistorySaveRequestDTO takingHistorySaveRequestDTO = new TakingHistorySaveRequestDTO(userInfo.getId(),takingInfoId, current_day,false);
+                    takingHistoryRepository.save(takingHistorySaveRequestDTO.toEntity());
+                }
+
+            });
+
+
+
         }
 
         return ResAddMedicineDto.builder()
