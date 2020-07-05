@@ -1,5 +1,7 @@
 package duksung.backend.hororok.ugeubi.notification.controller;
 
+import duksung.backend.hororok.ugeubi.common.auth.LoginUserInfo;
+import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.notification.domain.entity.Notification;
 import duksung.backend.hororok.ugeubi.notification.dto.NotificationSaveRequestDTO;
 import duksung.backend.hororok.ugeubi.notification.service.NotificationService;
@@ -28,7 +30,7 @@ public class NotificationController {
 
     //사용자의 알람 기록 가져오기
     @GetMapping("/getNotifications")
-    public List<Notification> findById(@RequestParam(value = "id") Long id) {
-        return notificationService.findAllById(id);
+    public List<Notification> findById(@LoginUserInfo UserInfo userInfo) {
+        return notificationService.findAllById(userInfo.getId());
     }
 }
