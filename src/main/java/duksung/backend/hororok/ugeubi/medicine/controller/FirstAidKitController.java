@@ -38,18 +38,18 @@ public class FirstAidKitController {
     }
 
     @GetMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
-    public ResponseEntity<ResSingleMedicineDto> getSingleMedicine(@PathVariable("medicine-id") String medicineId,
+    public ResponseEntity<ResSingleMedicineDto> getSingleMedicine(@PathVariable("medicine-id") Long medicineId,
                                                                   @LoginUserInfo UserInfo userInfo){
         return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.getSingleMedicine(medicineId, userInfo));
     }
 
-    /*@PatchMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
-    public ResponseEntity<ResMedicineDto> modifyMedicine(@PathVariable("medicine-id") String medicineId,
+    @PatchMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
+    public ResponseEntity<ResMedicineDto> modifyMedicine(@PathVariable("medicine-id") Long medicineId,
                                                             @LoginUserInfo UserInfo userInfo,
                                                             @RequestBody @Valid ReqMedicineDto reqMedicineDto){
 
         return ResponseEntity.status(HttpStatus.OK).body(firstAidKitService.modifyMedicine(medicineId, userInfo, reqMedicineDto));
-    }*/
+    }
 
     @DeleteMapping("/first-aid-kit/medicines/{medicine-id:^[0-9]+$}")
     public ResponseEntity<Void> deleteMedicine(@PathVariable("medicine-id") Long medicineId,

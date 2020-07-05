@@ -44,12 +44,4 @@ public class TakingInfoDay extends BaseTimeEntity {
         this.takingDayOfWeek=takingDayOfWeek;
         this.takingNumber=takingNumber;
     }
-
-    public void modify(Long medicineId, String takingTime, String takingDayOfWeek, Integer takingNumber){
-        this.medicineId=medicineId;
-        this.takingTime=takingTime;
-        this.takingDayOfWeek=takingDayOfWeek;
-        this.takingNumber=takingNumber;
-    }
-
 }

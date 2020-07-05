@@ -46,39 +46,11 @@ public class FirstAidKitService {
                 .build();
         Medicine savedMedicine = medicineRepository.save(medicine);
 
-        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
-        // 1     2     3     4     5     6     7
-        final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
-        String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]; //요일
-
-        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
-        String current_day = df.format(oCalendar.getTime()); //오늘 날짜
-
         if(isTaken){ //복용약의 경우
-            List<TakingInfoDay> list = reqMedicineDto.getTakingInfoDayDto().toEntities(userId, savedMedicine);
-            list.stream().forEach(takingInfoDay -> {
-                //takingInfo에 저장
-                Long takingInfoId = (takingInfoDayRepository.save(takingInfoDay)).getId();
-
-                //복용약의 등록 요일이 오늘이면 TakingHistory에 등록
-                if((takingInfoDay.getTakingDayOfWeek()).equals(today)){
-                    TakingHistorySaveRequestDTO takingHistorySaveRequestDTO = new TakingHistorySaveRequestDTO(userInfo.getId(),takingInfoId, current_day,false);
-                    takingHistoryRepository.save(takingHistorySaveRequestDTO.toEntity());
-                }
-
-            });
+            saveTakingInfoAndTakingHistory(reqMedicineDto, userInfo, savedMedicine);
         }
 
-        return ResMedicineDto.builder()
-                .medicineId(savedMedicine.getId())
-                .medicineName(savedMedicine.getMedicineName())
-                .medicineType(savedMedicine.getMedicineType().getTypeDescription())
-                .isTaken(savedMedicine.getIsTaken())
-                .medicineValidTerm(savedMedicine.getMedicineValidTerm())
-                .memo(savedMedicine.getMemo())
-                .takingInfoDayDto(Optional.ofNullable(reqMedicineDto.getTakingInfoDayDto())
-                                            .orElse(new TakingInfoDayDto()))
-                .build();
+        return makeResMedicineDto(savedMedicine, reqMedicineDto);
     }
 
     public ResMedicineListDto getUsersMedicineList(UserInfo userInfo) {
@@ -92,14 +64,14 @@ public class FirstAidKitService {
                 .build();
     }
 
-    public ResSingleMedicineDto getSingleMedicine(String medicineId, UserInfo userInfo) {
+    public ResSingleMedicineDto getSingleMedicine(Long medicineId, UserInfo userInfo) {
         Long userId = userInfo.getId();
         List<TakingInfoDay> takingInfoDaysList;
         Set<String> takingDayOfWeekSet;
         Set<String> takingTimeSet;
         TakingInfoDayDto takingInfoDayDto = null;
 
-        Medicine medicine = medicineRepository.findByUserIdAndId(userId, Long.parseLong(medicineId))
+        Medicine medicine = medicineRepository.findByUserIdAndId(userId, medicineId)
                 .orElseThrow(()-> new NoExistMedicineException());
 
         if(medicine.getIsTaken()){ //복용약의 경우
@@ -137,18 +109,69 @@ public class FirstAidKitService {
         Medicine medicine = medicineRepository.findByUserIdAndId(userId,medicineId)
                 .orElseThrow(() -> new NoExistMedicineException());
 
-        if(medicine.getIsTaken()){//복용약의 경우
-            List<TakingInfoDay> list = takingInfoDayRepository.findAllByMedicineIdAndUserId(medicineId,userId);
-            list.stream().forEach(takingInfoDay -> takingInfoDayRepository.delete(takingInfoDay));
-        }
+        deleteTakingInfoDay(medicine, userInfo);
+
         medicineRepository.delete(medicine);
     }
 
-    /*@Transactional
-    public ResMedicineDto modifyMedicine(String medicineId, UserInfo userInfo, ReqMedicineDto reqMedicineDto) {
-        Medicine medicine = medicineRepository.findByUserIdAndId(userInfo.getId(), Long.parseLong(medicineId))
+    @Transactional
+    public ResMedicineDto modifyMedicine(Long medicineId, UserInfo userInfo, ReqMedicineDto reqMedicineDto) {
+
+        Long userId = userInfo.getId();
+
+        Medicine medicine = medicineRepository.findByUserIdAndId(userId, medicineId)
                 .orElseThrow(()-> new NoExistMedicineException());
 
-        //medicine.modify(reqMedicineDto.getMedicineName(), reqMedicineDto.);
-    }*/
+        medicine.modify(reqMedicineDto.getMedicineName(),reqMedicineDto.getMedicineType(),reqMedicineDto.getMedicineValidTerm(),
+                reqMedicineDto.getIsTaken(), reqMedicineDto.getMemo());
+
+        deleteTakingInfoDay(medicine, userInfo);
+
+        if(reqMedicineDto.getIsTaken()){//복용약의 경우
+            saveTakingInfoAndTakingHistory(reqMedicineDto, userInfo, medicine);
+        }
+        return makeResMedicineDto(medicine, reqMedicineDto);
+    }
+
+    private void deleteTakingInfoDay(Medicine medicine, UserInfo userInfo){
+        if(medicine.getIsTaken()){//복용약의 경우
+            List<TakingInfoDay> list = takingInfoDayRepository.findAllByMedicineIdAndUserId(medicine.getId(),userInfo.getId());
+            list.stream().forEach(takingInfoDay -> takingInfoDayRepository.delete(takingInfoDay));
+        }
+    }
+
+    private void saveTakingInfoAndTakingHistory(ReqMedicineDto reqMedicineDto, UserInfo userInfo, Medicine medicine) {
+        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+        // 1     2     3     4     5     6     7
+        final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
+        String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]; //요일
+
+        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
+        String current_day = df.format(oCalendar.getTime()); //오늘 날짜
+
+        List<TakingInfoDay> list = reqMedicineDto.getTakingInfoDayDto().toEntities(userInfo.getId(), medicine);
+        list.stream().forEach(takingInfoDay -> {
+            //takingInfo 에 저장
+            Long takingInfoId = (takingInfoDayRepository.save(takingInfoDay)).getId();
+
+            //복용약의 등록 요일이 오늘이면 TakingHistory 에 등록
+            if((takingInfoDay.getTakingDayOfWeek()).equals(today)){
+                TakingHistorySaveRequestDTO takingHistorySaveRequestDTO = new TakingHistorySaveRequestDTO(userInfo.getId(),takingInfoId, current_day,false);
+                takingHistoryRepository.save(takingHistorySaveRequestDTO.toEntity());
+            }
+        });
+    }
+
+    private ResMedicineDto makeResMedicineDto(Medicine medicine, ReqMedicineDto reqMedicineDto) {
+        return ResMedicineDto.builder()
+                .medicineId(medicine.getId())
+                .medicineName(medicine.getMedicineName())
+                .medicineType(medicine.getMedicineType().getTypeDescription())
+                .isTaken(medicine.getIsTaken())
+                .medicineValidTerm(medicine.getMedicineValidTerm())
+                .memo(medicine.getMemo())
+                .takingInfoDayDto(Optional.ofNullable(reqMedicineDto.getTakingInfoDayDto())
+                        .orElse(new TakingInfoDayDto()))
+                .build();
+    }
 }
