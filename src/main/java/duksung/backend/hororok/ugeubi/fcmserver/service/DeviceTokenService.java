@@ -24,4 +24,7 @@ public class DeviceTokenService {
         return deviceTokenRepository.save(deviceTokenDto.toEntity()).getId();
     }
 
+    public List<String> findTokenByUserId(List<Long> todayTakingUserList) {
+        return deviceTokenRepository.findTokenByUserId(todayTakingUserList);
+    }
 }

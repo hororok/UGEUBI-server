@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.fcmserver.service;
 
+import duksung.backend.hororok.ugeubi.notification.service.NotificationService;
 import duksung.backend.hororok.ugeubi.taking.controller.TakingController;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import duksung.backend.hororok.ugeubi.taking.service.TakingInfoService;
@@ -17,7 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AndroidPushPeriodicNotifications {
 
-    private static TakingInfoService takingInfocontroller;
+    private static TakingInfoService takingInfoService;
+    private static DeviceTokenService deviceTokenService;
+    private static NotificationService notificationService;
 
     public static String PeriodicNotificationJson() throws JSONException {
 
@@ -30,29 +33,36 @@ public class AndroidPushPeriodicNotifications {
         String today = week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1];
         System.out.println("현재 요일: " + week[oCalendar.get(Calendar.DAY_OF_WEEK) - 1]);
 
-        SimpleDateFormat df = new SimpleDateFormat ( "HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat ( "HH:mm");
         Calendar time = Calendar.getInstance();
         String current_time = df.format(time.getTime());
 
-        //현재 요일과 시간을 고려해서 알람 받아야 할 유저 정보를 가져옴
-       // List<TakingInfo> todayTakingList = takingInfocontroller.findByTaking_day(today);
+        System.out.println("test****"+today);  //월 화 수...
+        System.out.println("test****"+current_time); //02:07
 
+        //현재 요일과 시간을 고려해서 알람 받아야 할 유저 정보를 가져옴
+        List<Long> todayTakingUserList = takingInfoService.findUserIdByTaking_day(today, current_time);
+       // List<Long> todayTakingUserList = takingInfoService.findUserIdByTaking_day("월", "02:20");
+        System.out.println("test++++null?"+todayTakingUserList.get(0));
 
         //알람을 받을 토큰 리스트
-        String sampleData[] = {"cPden3sLQKCuw8BVfDhhjl:APA91bGyJ2B0zP54Pty1xWl9Lr1R7xQKEXikGNlJXPloJonaBpQa_Up4O-1j-LUzKJmmmlEtQooqsusqzE0PfgxmPaCYoy7hzMaQjKLXISYEGmkYoo4rpxQzpBL6IEmOXGDXhcflkSez"};
+        List<String> tokenList = deviceTokenService.findTokenByUserId(todayTakingUserList);
+
+        //알람을 받을 토큰 리스트
+       // String sampleData[] = {"cPden3sLQKCuw8BVfDhhjl:APA91bGyJ2B0zP54Pty1xWl9Lr1R7xQKEXikGNlJXPloJonaBpQa_Up4O-1j-LUzKJmmmlEtQooqsusqzE0PfgxmPaCYoy7hzMaQjKLXISYEGmkYoo4rpxQzpBL6IEmOXGDXhcflkSez"};
 
         JSONObject body = new JSONObject();
 
-        List<String> tokenlist = new ArrayList<String>(); //알림을 보낼 디바이스의 디바이스토큰을 넣는 list
+       // List<String> tokenlist = new ArrayList<String>(); //알림을 보낼 디바이스의 디바이스토큰을 넣는 list
 
-        for(int i=0; i<sampleData.length; i++){
-            tokenlist.add(sampleData[i]);
-        }
+//        for(int i=0; i<sampleData.length; i++){
+//            tokenlist.add(sampleData[i]);
+//        }
 
         JSONArray array = new JSONArray();
 
-        for(int i=0; i<tokenlist.size(); i++) {
-            array.put(tokenlist.get(i));
+        for(int i=0; i<tokenList.size(); i++) {
+            array.put(tokenList.get(i));
         }
 
         body.put("registration_ids", array);
@@ -65,6 +75,8 @@ public class AndroidPushPeriodicNotifications {
         body.put("notification", notification);
 
         System.out.println(body.toString());
+
+        //알람 정보 저장 registerNotifications
 
         return body.toString();
     }

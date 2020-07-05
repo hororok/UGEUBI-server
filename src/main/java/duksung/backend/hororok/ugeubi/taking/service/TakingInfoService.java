@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class TakingInfoService {
 
-    private final TakingInfoDayRepository takingInfoRepository;
+    private final TakingInfoDayRepository takingInfoDayRepositoryRepository;
     private final TakingInfoTermRepository takingInfoTermRepository;
 
     @Transactional
     public Long save(TakingInfoSaveRequestDTO requestDTO){
-        return takingInfoRepository.save(requestDTO.toEntity()).getId();
+        return takingInfoDayRepositoryRepository.save(requestDTO.toEntity()).getId();
     }
 /*
     @Transactional
@@ -30,14 +30,19 @@ public class TakingInfoService {
     }*/
 
     public List<TakingInfoDay> findAllByid(Long id) {
-        List<TakingInfoDay> entity = takingInfoRepository.findAllByid(id);
+        List<TakingInfoDay> entity = takingInfoDayRepositoryRepository.findAllByid(id);
         //   .orElseThrow(() -> new IllegalArgumentException("복용약이 없습니다. id="+id));
         // return new TakingInfoResponseDTO(entity);
         return entity;
     }
 
     public List<TakingInfoDay> findByTaking_day(String day) {
-        List<TakingInfoDay> entity = takingInfoRepository.findByTaking_day(day);
+        List<TakingInfoDay> entity = takingInfoDayRepositoryRepository.findByTaking_day(day);
+        return entity;
+    }
+
+    public List<Long> findUserIdByTaking_day(String day, String time) {
+        List<Long> entity = takingInfoDayRepositoryRepository.findUserIdByTaking_day(day, time);
         return entity;
     }
 

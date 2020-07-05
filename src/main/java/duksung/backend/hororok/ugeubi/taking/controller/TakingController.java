@@ -120,4 +120,11 @@ public class TakingController {
         takingHistoryService.updateIsTaken(requestDTO); //taking_history_id, 날짜, istaken
     }
 
+    @PostMapping("/takingfindUserIdByTaking_day")
+    public void findUserIdByTaking_day() {
+        List<Long> idList = takingInfoService.findUserIdByTaking_day("월", "02:20");
+        System.out.println("testid======"+idList.get(0));
+    }
+
+
 }

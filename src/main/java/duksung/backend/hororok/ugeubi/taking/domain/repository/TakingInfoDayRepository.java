@@ -16,6 +16,9 @@ public interface TakingInfoDayRepository extends JpaRepository<TakingInfoDay,Lon
     @Query("select ti from TakingInfoDay ti where ti.takingDayOfWeek = ?1")
     List<TakingInfoDay> findByTaking_day(String taking_day);
 
+    @Query("select distinct ti.userId from TakingInfoDay ti where ti.takingDayOfWeek = ?1 and ti.takingTime = ?2")
+    List<Long> findUserIdByTaking_day(String day, String time);
+
     List<TakingInfoDay> findAllByMedicineIdAndUserId(Long medicineId, Long userId);
 
 }

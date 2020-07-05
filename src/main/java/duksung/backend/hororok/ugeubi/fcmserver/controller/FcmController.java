@@ -37,7 +37,7 @@ public class FcmController {
     }
 
     //복용약 정보 체크해서 알림
-    // @Scheduled(fixedRate = 1000)
+    @Scheduled(cron="0 * * * * *") //매 1분마다 수행 (하루에 1440회)
     @GetMapping(value = "/takingInfoSend")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException  {
         String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
@@ -61,4 +61,6 @@ public class FcmController {
 
         return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
     }
+
+    //유효기간 알림 (당일)
 }
