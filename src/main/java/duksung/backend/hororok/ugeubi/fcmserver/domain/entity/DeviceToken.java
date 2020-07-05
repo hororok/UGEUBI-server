@@ -21,6 +21,7 @@ public class DeviceToken extends BaseTimeEntity{
 
     private Long userId;
 
+    @Column(name="deviceToken",columnDefinition="LONGTEXT")
     private String deviceToken;
 
     @Builder
