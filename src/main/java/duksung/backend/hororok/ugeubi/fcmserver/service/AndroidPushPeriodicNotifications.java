@@ -3,11 +3,13 @@ package duksung.backend.hororok.ugeubi.fcmserver.service;
 import duksung.backend.hororok.ugeubi.notification.service.NotificationService;
 import duksung.backend.hororok.ugeubi.taking.controller.TakingController;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
+import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoDayRepository;
 import duksung.backend.hororok.ugeubi.taking.service.TakingInfoService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,13 +18,14 @@ import java.util.Calendar;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class AndroidPushPeriodicNotifications {
 
-    private static TakingInfoService takingInfoService;
-    private static DeviceTokenService deviceTokenService;
-    private static NotificationService notificationService;
+    private final TakingInfoDayRepository takingInfoDayRepository;
+    private final DeviceTokenService deviceTokenService;
+    private final NotificationService notificationService;
 
-    public static String PeriodicNotificationJson() throws JSONException {
+    public String PeriodicNotificationJson() throws JSONException {
 
         LocalDate localDate = LocalDate.now();
 
@@ -37,27 +40,13 @@ public class AndroidPushPeriodicNotifications {
         Calendar time = Calendar.getInstance();
         String current_time = df.format(time.getTime());
 
-        System.out.println("test****"+today);  //월 화 수...
-        System.out.println("test****"+current_time); //02:07
-
         //현재 요일과 시간을 고려해서 알람 받아야 할 유저 정보를 가져옴
-        List<Long> todayTakingUserList = takingInfoService.findUserIdByTaking_day(today, current_time);
-       // List<Long> todayTakingUserList = takingInfoService.findUserIdByTaking_day("월", "02:20");
-        System.out.println("test++++null?"+todayTakingUserList.get(0));
+        List<Long> todayTakingUserList = takingInfoDayRepository.findUserIdByTaking_day(today, current_time);
 
         //알람을 받을 토큰 리스트
         List<String> tokenList = deviceTokenService.findTokenByUserId(todayTakingUserList);
 
-        //알람을 받을 토큰 리스트
-       // String sampleData[] = {"cPden3sLQKCuw8BVfDhhjl:APA91bGyJ2B0zP54Pty1xWl9Lr1R7xQKEXikGNlJXPloJonaBpQa_Up4O-1j-LUzKJmmmlEtQooqsusqzE0PfgxmPaCYoy7hzMaQjKLXISYEGmkYoo4rpxQzpBL6IEmOXGDXhcflkSez"};
-
         JSONObject body = new JSONObject();
-
-       // List<String> tokenlist = new ArrayList<String>(); //알림을 보낼 디바이스의 디바이스토큰을 넣는 list
-
-//        for(int i=0; i<sampleData.length; i++){
-//            tokenlist.add(sampleData[i]);
-//        }
 
         JSONArray array = new JSONArray();
 

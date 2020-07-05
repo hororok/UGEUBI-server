@@ -9,6 +9,7 @@ import duksung.backend.hororok.ugeubi.fcmserver.dto.DeviceTokenDto;
 import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushNotificationsService;
 import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushPeriodicNotifications;
 import duksung.backend.hororok.ugeubi.fcmserver.service.DeviceTokenService;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +19,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
-
+@RequiredArgsConstructor
 @RestController
 public class FcmController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     AndroidPushNotificationsService androidPushNotificationsService;
+
+    @Autowired
+    AndroidPushPeriodicNotifications androidPushPeriodNotifications;
 
     @Autowired
     DeviceTokenService deviceTokenService;
@@ -40,7 +44,8 @@ public class FcmController {
     @Scheduled(cron="0 * * * * *") //매 1분마다 수행 (하루에 1440회)
     @GetMapping(value = "/takingInfoSend")
     public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException  {
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
+
+        String notifications = androidPushPeriodNotifications.PeriodicNotificationJson();
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 
