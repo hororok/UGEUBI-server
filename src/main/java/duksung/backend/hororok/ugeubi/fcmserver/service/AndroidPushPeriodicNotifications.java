@@ -72,6 +72,7 @@ public class AndroidPushPeriodicNotifications {
         System.out.println(body.toString());
 
         //알람 정보 저장 registerNotifications
+        //notificationService.registerNotifications();
 
         return body.toString();
     }
