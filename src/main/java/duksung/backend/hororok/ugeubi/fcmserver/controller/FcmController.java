@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.fcmserver.controller;
 
+import java.text.ParseException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -10,6 +11,7 @@ import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushNotifications
 import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushPeriodicNotifications;
 import duksung.backend.hororok.ugeubi.fcmserver.service.DeviceTokenService;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,7 @@ public class FcmController {
     //복용약 정보 체크해서 알림
     @Scheduled(cron="0 * * * * *") //매 1분마다 수행 (하루에 1440회)
     @GetMapping(value = "/takingInfoSend")
-    public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException  {
+    public @ResponseBody ResponseEntity<String> sendTakingInfo() throws JSONException, InterruptedException  {
 
         String notifications = androidPushPeriodNotifications.PeriodicNotificationJson();
 
@@ -68,4 +70,30 @@ public class FcmController {
     }
 
     //유효기간 알림 (당일)
+    @Scheduled(cron="0 0 10 * * *") //매일 10시 실행
+    @GetMapping(value = "/validTermSend")
+    @JsonIgnore
+    public @ResponseBody ResponseEntity<String> sendValidTerm() throws JSONException, InterruptedException, ParseException {
+
+        String notifications = androidPushPeriodNotifications.validTermNotificationJson();
+
+        HttpEntity<String> request = new HttpEntity<>(notifications);
+
+        CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
+        CompletableFuture.allOf(pushNotification).join();
+
+        try{
+            String firebaseResponse = pushNotification.get();
+            return new ResponseEntity<>(firebaseResponse, HttpStatus.OK);
+        }
+        catch (InterruptedException e){
+            logger.debug("got interrupted!");
+            throw new InterruptedException();
+        }
+        catch (ExecutionException e){
+            logger.debug("execution error!");
+        }
+
+        return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
+    }
 }
