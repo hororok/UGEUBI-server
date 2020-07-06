@@ -92,14 +92,14 @@ public class AndroidPushPeriodicNotifications {
         SimpleDateFormat fDate = new SimpleDateFormat("yyyy-MM-dd"); //같은 형식으로 맞춰줌
         Date medicineValidTermDate = fDate.parse(medicineValidTerm);
 
-        System.out.println("medicineValidTermDate+++++++"+medicineValidTermDate);
+       // System.out.println("medicineValidTermDate+++++++"+medicineValidTermDate);
         //현재 날짜를 고려해서 알람 받아야 할 유저 정보를 가져옴
         List<Long> todayUserList = medicineRepository.findUserIdValidTerm(medicineValidTermDate);
-        System.out.println("todayUserList+++++++"+todayUserList.get(0));
+      //  System.out.println("todayUserList+++++++"+todayUserList.get(0));
 
         //알람을 받을 토큰 리스트
         List<String> tokenList = deviceTokenRepository.findTokenByUserId(todayUserList);
-        System.out.println("tokenList+++++++"+tokenList.get(0));
+       // System.out.println("tokenList+++++++"+tokenList.get(0));
 
         JSONObject body = new JSONObject();
 
