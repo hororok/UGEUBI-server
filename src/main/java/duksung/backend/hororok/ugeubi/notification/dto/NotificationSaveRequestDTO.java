@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-
+/*
 @Getter
 @NoArgsConstructor
 public class NotificationSaveRequestDTO {
@@ -43,4 +43,4 @@ public class NotificationSaveRequestDTO {
                 .build();
 
     }
-}
+}*/
