@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public interface TakingHistoryRepository extends JpaRepository<TakingHistory,Long> {
-    @Query("SELECT new duksung.backend.hororok.ugeubi.taking.dto.TakingInfoHistoryResponseDTO(ti.id, ti.userId, ti.medicineId, th.taking_history_id, ti.medicineName, ti.takingTime, ti.takingNumber, th.taking_history_is_taken)" +
+    @Query("SELECT new duksung.backend.hororok.ugeubi.taking.dto.TakingInfoHistoryResponseDTO(ti.id, ti.userId, ti.medicineId, th.taking_history_id, th.taking_history_date, ti.medicineName, ti.takingTime, ti.takingNumber, th.taking_history_is_taken)" +
             "FROM TakingHistory th JOIN TakingInfoDay ti " +
             "ON ti.id = th.taking_info_id WHERE th.user_id =:user_id and th.taking_history_date =:date")
     List<TakingInfoHistoryResponseDTO> findAllByIdAndDate(@Param("user_id") Long user_id, @Param("date") String date);
