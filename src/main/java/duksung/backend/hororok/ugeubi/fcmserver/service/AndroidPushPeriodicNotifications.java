@@ -76,22 +76,19 @@ public class AndroidPushPeriodicNotifications {
         //알람 정보 저장 registerNotifications
         SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyy-mm-dd");
 
-        todayTakingUserList.forEach(userId -> {
-            List<TakingInfoDay> takingInfoDayList = takingInfoDayRepository.findAllByUserId(userId);
-            takingInfoDayList.forEach(takingInfoDay -> {
-                NotificationSaveRequestDTO notificationSaveRequestDTO =
-                        NotificationSaveRequestDTO.builder()
-                        .userId(userId)
+        List<TakingInfoDay> takingInfoDayList = takingInfoDayRepository.findAllByTakingDayOfWeekAndAndTakingTime(today,current_time);
+        takingInfoDayList.forEach(takingInfoDay -> {
+            NotificationSaveRequestDTO notificationSaveRequestDTO =
+                    NotificationSaveRequestDTO.builder()
+                        .userId(takingInfoDay.getUserId())
                         .medicineId(takingInfoDay.getMedicineId())
                         .medicineName(takingInfoDay.getMedicineName())
                         .notificationDate(dateFormat.format(oCalendar.getTime()))
                         .notificationTime(takingInfoDay.getTakingTime())
                         .notificationType(NotificationType.TAKING_TIME)
                         .build();
-
                 notificationRepository.save(notificationSaveRequestDTO.toEntity());
             });
-        });
 
         return body.toString();
     }
@@ -108,7 +105,7 @@ public class AndroidPushPeriodicNotifications {
 
        // System.out.println("medicineValidTermDate+++++++"+medicineValidTermDate);
         //현재 날짜를 고려해서 알람 받아야 할 유저 정보를 가져옴
-        List<Long> todayUserList = medicineRepository.findUserIdValidTerm(medicineValidTermDate);
+        List<Long> todayUserList = medicineRepository.findUserIdValidTerm(medicineValidTerm);
       //  System.out.println("todayUserList+++++++"+todayUserList.get(0));
 
         //알람을 받을 토큰 리스트
@@ -136,7 +133,7 @@ public class AndroidPushPeriodicNotifications {
 
         //알람 정보 저장 registerNotifications
 
-        List<Medicine> medicineList = medicineRepository.findAllByValidTerm(medicineValidTermDate);
+        List<Medicine> medicineList = medicineRepository.findAllByValidTerm(medicineValidTerm);
 
         medicineList.stream().forEach(Medicine -> {
             NotificationSaveRequestDTO requestDTO = NotificationSaveRequestDTO.builder()

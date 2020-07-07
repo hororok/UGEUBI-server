@@ -2,6 +2,7 @@ package duksung.backend.hororok.ugeubi.medicine.service;
 
 import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
+import duksung.backend.hororok.ugeubi.common.util.ParseString;
 import duksung.backend.hororok.ugeubi.medicine.domain.entity.Medicine;
 import duksung.backend.hororok.ugeubi.medicine.domain.repository.MedicineRepository;
 import duksung.backend.hororok.ugeubi.medicine.dto.request.ReqMedicineDto;
@@ -15,8 +16,11 @@ import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingHistoryRepo
 import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingInfoDayRepository;
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -64,6 +68,7 @@ public class FirstAidKitService {
                 .build();
     }
 
+    @SneakyThrows
     public ResSingleMedicineDto getSingleMedicine(Long medicineId, UserInfo userInfo) {
         Long userId = userInfo.getId();
         List<TakingInfoDay> takingInfoDaysList;
@@ -93,13 +98,12 @@ public class FirstAidKitService {
         return ResSingleMedicineDto.builder()
                 .medicineName(medicine.getMedicineName())
                 .medicineType(medicine.getMedicineType().getTypeDescription())
-                .medicineValidTerm(medicine.getMedicineValidTerm())
+                .medicineValidTerm(ParseString.toDate(medicine.getMedicineValidTerm()))
                 .memo(medicine.getMemo())
                 .isTaken(medicine.getIsTaken())
                 .takingInfoDayDto(Optional.ofNullable(takingInfoDayDto)
                         .orElse(new TakingInfoDayDto()))
                 .build();
-
     }
 
     @Transactional
@@ -168,7 +172,7 @@ public class FirstAidKitService {
                 .medicineName(medicine.getMedicineName())
                 .medicineType(medicine.getMedicineType().getTypeDescription())
                 .isTaken(medicine.getIsTaken())
-                .medicineValidTerm(medicine.getMedicineValidTerm())
+                .medicineValidTerm(ParseString.toDate(medicine.getMedicineValidTerm()))
                 .memo(medicine.getMemo())
                 .takingInfoDayDto(Optional.ofNullable(reqMedicineDto.getTakingInfoDayDto())
                         .orElse(new TakingInfoDayDto()))

@@ -18,8 +18,8 @@ public interface MedicineRepository extends JpaRepository<Medicine,Long> {
     Optional<Medicine> findByUserIdAndId(Long userId, Long medicineId);
 
     @Query("select distinct m.userId from Medicine m where m.medicineValidTerm = ?1")
-    List<Long> findUserIdValidTerm(Date medicineValidTerm);
+    List<Long> findUserIdValidTerm(String medicineValidTerm);
 
     @Query("select m from Medicine m where m.medicineValidTerm = ?1")
-    List<Medicine> findAllByValidTerm(Date medicineValidTerm);
+    List<Medicine> findAllByValidTerm(String medicineValidTerm);
 }
