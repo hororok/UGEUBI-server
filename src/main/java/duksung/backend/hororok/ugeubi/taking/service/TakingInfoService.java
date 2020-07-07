@@ -23,14 +23,9 @@ public class TakingInfoService {
     public Long save(TakingInfoSaveRequestDTO requestDTO){
         return takingInfoDayRepositoryRepository.save(requestDTO.toEntity()).getId();
     }
-/*
-    @Transactional
-    public Long saveTerm(TakingInfoTermSaveRequestDTO requestDTO){
-        return takingInfoTermRepository.save(requestDTO.toEntity()).getTaking_info_term_id();
-    }*/
 
     public List<TakingInfoDay> findAllByid(Long id) {
-        List<TakingInfoDay> entity = takingInfoDayRepositoryRepository.findAllByid(id);
+        List<TakingInfoDay> entity = takingInfoDayRepositoryRepository.findAllByUserId(id);
         //   .orElseThrow(() -> new IllegalArgumentException("복용약이 없습니다. id="+id));
         // return new TakingInfoResponseDTO(entity);
         return entity;

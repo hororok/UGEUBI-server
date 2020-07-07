@@ -8,13 +8,7 @@ import duksung.backend.hororok.ugeubi.notification.dto.response.ResListItemNotif
 import duksung.backend.hororok.ugeubi.notification.dto.response.ResNotificationsListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-<<<<<<< HEAD
-import java.util.Date;
-=======
 import java.util.Comparator;
->>>>>>> b04757d69a0e7b0a00c66aa6a4c5c90c65f787a6
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,15 +18,6 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-<<<<<<< HEAD
-=======
-    //알람 등록
-    /*@Transactional
-    public Long save(NotificationSaveRequestDTO requestDTO){
-        return notificationRepository.save(requestDTO.toEntity()).getNotification_id();
-    }*/
-
->>>>>>> b04757d69a0e7b0a00c66aa6a4c5c90c65f787a6
     //사용자의 알람 기록 가져오기
     public ResNotificationsListDto getUsersNotificationsList(UserInfo userInfo) {
         List<Notification> notificationList = notificationRepository.findAllByUserId(userInfo.getId());
@@ -46,11 +31,5 @@ public class NotificationService {
         return ResNotificationsListDto.builder()
                 .notificationsList(resNotificationList)
                 .build();
-    }
-
-    //알람 등록
-    @Transactional
-    public void registerNotifications(NotificationSaveRequestDTO requestDTO){
-        //return notificationRepository.save(requestDTO.toEntity()).getNotification_id();
     }
 }

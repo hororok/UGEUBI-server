@@ -74,7 +74,7 @@ public class AndroidPushPeriodicNotifications {
         System.out.println(body.toString());
 
         //알람 정보 저장 registerNotifications
-        //notificationService.registerNotifications();
+        SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyy-mm-dd");
 
         todayTakingUserList.forEach(userId -> {
             List<TakingInfoDay> takingInfoDayList = takingInfoDayRepository.findAllByUserId(userId);
@@ -84,10 +84,12 @@ public class AndroidPushPeriodicNotifications {
                         .userId(userId)
                         .medicineId(takingInfoDay.getMedicineId())
                         .medicineName(takingInfoDay.getMedicineName())
-                        //.notificationDate()
+                        .notificationDate(dateFormat.format(oCalendar.getTime()))
                         .notificationTime(takingInfoDay.getTakingTime())
-                        //.notificationType(NotificationType.TAKING_TIME)
+                        .notificationType(NotificationType.TAKING_TIME)
                         .build();
+
+                notificationRepository.save(notificationSaveRequestDTO.toEntity());
             });
         });
 
@@ -95,10 +97,6 @@ public class AndroidPushPeriodicNotifications {
     }
 
     public String validTermNotificationJson() throws JSONException, ParseException {
-
-        LocalDate localDate = LocalDate.now();
-
-        Calendar oCalendar = Calendar.getInstance( );  // 현재 날짜
 
         SimpleDateFormat df = new SimpleDateFormat ( "yyyy-mm-dd");
         Calendar date = Calendar.getInstance();
@@ -147,7 +145,7 @@ public class AndroidPushPeriodicNotifications {
                     .medicineName(Medicine.getMedicineName())
                     .notificationDate(medicineValidTerm)
                     .notificationTime(null)
-                    //.no(NotificationType.VALID_TERM)
+                    .notificationType(NotificationType.VALID_TERM)
                     .build();
 
             notificationRepository.save(requestDTO.toEntity());

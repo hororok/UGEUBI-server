@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import duksung.backend.hororok.ugeubi.common.auth.LoginUserInfo;
 import duksung.backend.hororok.ugeubi.common.auth.UserInfo;
 import duksung.backend.hororok.ugeubi.fcmserver.dto.DeviceTokenDto;
@@ -11,7 +12,6 @@ import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushNotifications
 import duksung.backend.hororok.ugeubi.fcmserver.service.AndroidPushPeriodicNotifications;
 import duksung.backend.hororok.ugeubi.fcmserver.service.DeviceTokenService;
 import lombok.RequiredArgsConstructor;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
