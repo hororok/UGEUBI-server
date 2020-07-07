@@ -32,19 +32,19 @@ public class Medicine extends BaseTimeEntity{
     private String memo;
 
     @Builder
-    private Medicine(Long userId, String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken, String memo){
+    private Medicine(Long userId, String medicineName, MedicineType medicineType, String medicineValidTerm, Boolean isTaken, String memo){
         this.userId=userId;
         this.medicineName=medicineName;
         this.medicineType=medicineType;
-        this.medicineValidTerm=medicineValidTerm.toString();
+        this.medicineValidTerm=medicineValidTerm;
         this.isTaken=isTaken;
         this.memo=memo;
     }
 
-    public void modify(String medicineName, MedicineType medicineType, Date medicineValidTerm, Boolean isTaken, String memo){
+    public void modify(String medicineName, MedicineType medicineType, String medicineValidTerm, Boolean isTaken, String memo){
         this.medicineName=medicineName;
         this.medicineType=medicineType;
-        this.medicineValidTerm=medicineValidTerm.toString();
+        this.medicineValidTerm=medicineValidTerm;
         this.isTaken=isTaken;
         this.memo=memo;
     }
@@ -54,7 +54,7 @@ public class Medicine extends BaseTimeEntity{
                 .medicineId(id)
                 .medicineName(medicineName)
                 .medicineType(medicineType)
-                .medicineValidTerm(ParseString.toDate(medicineValidTerm))
+                .medicineValidTerm(medicineValidTerm)
                 .isTaken(isTaken)
                 .memo(memo)
                 .build();

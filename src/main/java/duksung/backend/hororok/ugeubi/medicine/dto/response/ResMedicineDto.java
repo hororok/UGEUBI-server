@@ -16,8 +16,8 @@ public class ResMedicineDto {
 
     private String medicineType;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date medicineValidTerm;
+    //@JsonFormat(pattern="yyyy-MM-dd")
+    private String medicineValidTerm;
 
     private Boolean isTaken;
 
@@ -26,7 +26,7 @@ public class ResMedicineDto {
     private TakingInfoDayDto takingInfo;
 
     @Builder
-    public ResMedicineDto(Long medicineId, String medicineName, String medicineType, Date medicineValidTerm,
+    public ResMedicineDto(Long medicineId, String medicineName, String medicineType, String medicineValidTerm,
                           Boolean isTaken, String memo, TakingInfoDayDto takingInfoDayDto){
         this.medicineId=medicineId;
         this.medicineName=medicineName;

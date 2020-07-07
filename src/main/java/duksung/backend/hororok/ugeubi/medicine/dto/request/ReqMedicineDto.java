@@ -21,8 +21,8 @@ public class ReqMedicineDto {
     private MedicineType medicineType;
 
     @NotNull
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date medicineValidTerm;
+    //@DateTimeFormat(pattern="yyyy-MM-dd")
+    private String medicineValidTerm;
 
     @NotNull
     private Boolean isTaken;

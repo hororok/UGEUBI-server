@@ -1,13 +1,8 @@
 package duksung.backend.hororok.ugeubi.medicine.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import duksung.backend.hororok.ugeubi.medicine.dto.TakingInfoDayDto;
-import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.Date;
-import java.util.List;
 
 @Getter
 public class ResSingleMedicineDto {
@@ -16,8 +11,8 @@ public class ResSingleMedicineDto {
 
     private String medicineType;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date medicineValidTerm;
+    //@JsonFormat(pattern="yyyy-MM-dd")
+    private String medicineValidTerm;
 
     private Boolean isTaken; // 복용 유무
 
@@ -26,7 +21,7 @@ public class ResSingleMedicineDto {
     private TakingInfoDayDto takingInfo;
 
     @Builder
-    public ResSingleMedicineDto(String medicineName, String medicineType, Date medicineValidTerm,
+    public ResSingleMedicineDto(String medicineName, String medicineType, String medicineValidTerm,
                                 Boolean isTaken, String memo, TakingInfoDayDto takingInfoDayDto){
         this.medicineName=medicineName;
         this.medicineType=medicineType;

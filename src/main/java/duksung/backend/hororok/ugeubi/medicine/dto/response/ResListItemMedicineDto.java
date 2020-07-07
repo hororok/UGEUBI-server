@@ -1,6 +1,6 @@
 package duksung.backend.hororok.ugeubi.medicine.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import duksung.backend.hororok.ugeubi.common.util.ParseString;
 import duksung.backend.hororok.ugeubi.medicine.domain.entity.MedicineType;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +16,8 @@ public class ResListItemMedicineDto {
 
     private MedicineType medicineType;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date medicineValidTerm;
+    //@JsonFormat(pattern="yyyy-MM-dd")
+    private String medicineValidTerm;
 
     private Boolean isImminent; //유통기한 임박
 
@@ -27,14 +27,14 @@ public class ResListItemMedicineDto {
 
     @Builder
     public ResListItemMedicineDto(Long medicineId, String medicineName, MedicineType medicineType,
-                                  Date medicineValidTerm, Boolean isTaken, String memo){
-        this.medicineId=medicineId;
-        this.medicineName=medicineName;
-        this.medicineType=medicineType;
-        this.medicineValidTerm=medicineValidTerm;
-        this.isImminent=calculateImminent(medicineValidTerm);
-        this.isTaken=isTaken;
-        this.memo=memo;
+                    String medicineValidTerm, Boolean isTaken, String memo){
+                this.medicineId=medicineId;
+                this.medicineName=medicineName;
+                this.medicineType=medicineType;
+                this.medicineValidTerm=medicineValidTerm;
+                this.isImminent=calculateImminent(ParseString.toDate(medicineValidTerm));
+                this.isTaken=isTaken;
+                this.memo=memo;
     }
 
     private Boolean calculateImminent(Date medicineValidTerm) {
@@ -46,6 +46,5 @@ public class ResListItemMedicineDto {
         } else {
             return true;
         }
-
     }
 }

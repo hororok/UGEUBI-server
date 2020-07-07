@@ -74,7 +74,7 @@ public class AndroidPushPeriodicNotifications {
         System.out.println(body.toString());
 
         //알람 정보 저장 registerNotifications
-        SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyy-mm-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyy-MM-dd");
 
         List<TakingInfoDay> takingInfoDayList = takingInfoDayRepository.findAllByTakingDayOfWeekAndAndTakingTime(today,current_time);
         takingInfoDayList.forEach(takingInfoDay -> {
@@ -95,7 +95,7 @@ public class AndroidPushPeriodicNotifications {
 
     public String validTermNotificationJson() throws JSONException, ParseException {
 
-        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-mm-dd");
+        SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
         Calendar date = Calendar.getInstance();
         String medicineValidTerm = df.format(date.getTime());
 
