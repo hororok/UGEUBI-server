@@ -1,6 +1,7 @@
 package duksung.backend.hororok.ugeubi.notification.dto;
 
 import duksung.backend.hororok.ugeubi.notification.domain.entity.Notification;
+import duksung.backend.hororok.ugeubi.notification.domain.entity.NotificationType;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingHistory;
 import lombok.Builder;
 import lombok.Getter;

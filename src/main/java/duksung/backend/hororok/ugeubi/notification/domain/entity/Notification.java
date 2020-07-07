@@ -1,21 +1,22 @@
 package duksung.backend.hororok.ugeubi.notification.domain.entity;
 
 import duksung.backend.hororok.ugeubi.common.domain.BaseTimeEntity;
-import duksung.backend.hororok.ugeubi.medicine.domain.entity.Medicine;
+import duksung.backend.hororok.ugeubi.notification.dto.response.ResListItemNotificationDto;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
-@Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "notifications")
+@Entity
 public class Notification extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long notificationId;
+    private Long id;
 
     private Long medicineId;
 
@@ -28,22 +29,29 @@ public class Notification extends BaseTimeEntity {
     private String notificationTime; //-> null값 허용(유효기간인 경우)
 
     @Enumerated(EnumType.STRING)
-    private Notification_type notificationType;
+    private NotificationType notificationType;
 
-    public enum Notification_type{
-        taking_time, valid_term //복용시간, 유효기간
-    };
 
     @Builder
-    private Notification(Long medicineId, String medicineName, Long userId, String notificationDate, String notificationTime, Notification_type notificationType){
+    private Notification(Long medicineId, String medicineName, Long userId, String notificationDate, String notificationTime, NotificationType notificationType){
         this.medicineId=medicineId;
-        this.userId=userId;
         this.medicineName=medicineName;
+        this.userId=userId;
         this.notificationDate=notificationDate;
         this.notificationTime=notificationTime;
         this.notificationType=notificationType;
     }
 
+    public ResListItemNotificationDto toSingleNotificationDto() {
+        return ResListItemNotificationDto.builder()
+                .notificationId(id)
+                .medicineId(medicineId)
+                .medicineName(medicineName)
+                .notificationDate(notificationDate)
+                .notificationTime(notificationTime)
+                .notificationType(notificationType)
+                .build();
+    }
 }
 
 
