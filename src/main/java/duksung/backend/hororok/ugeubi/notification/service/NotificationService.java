@@ -8,8 +8,8 @@ import duksung.backend.hororok.ugeubi.taking.domain.repository.TakingHistoryRepo
 import duksung.backend.hororok.ugeubi.taking.dto.TakingHistorySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -19,15 +19,15 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    //알람 등록
-    @Transactional
-    public Long save(NotificationSaveRequestDTO requestDTO){
-        return notificationRepository.save(requestDTO.toEntity()).getNotification_id();
-    }
-
     //사용자의 알람 기록 가져오기
     public List<Notification> findAllById(Long id) {
         List<Notification> entity = notificationRepository.findAllById(id);
         return entity;
+    }
+
+    //알람 등록
+    @Transactional
+    public void registerNotifications(NotificationSaveRequestDTO requestDTO){
+        //return notificationRepository.save(requestDTO.toEntity()).getNotification_id();
     }
 }

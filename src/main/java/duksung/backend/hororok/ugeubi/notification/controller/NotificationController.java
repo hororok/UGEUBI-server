@@ -22,12 +22,15 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+<<<<<<< Updated upstream
     //알람 등록
     @PostMapping("/registerNotifications")
     public Long save(@RequestBody NotificationSaveRequestDTO requestDTO) {
         return notificationService.save(requestDTO);
     }
 
+=======
+>>>>>>> Stashed changes
     //사용자의 알람 기록 가져오기
     @GetMapping("/getNotifications")
     public List<Notification> findById(@LoginUserInfo UserInfo userInfo) {

@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.fcmserver.service;
 
+import duksung.backend.hororok.ugeubi.notification.dto.NotificationSaveRequestDTO;
 import duksung.backend.hororok.ugeubi.notification.service.NotificationService;
 import duksung.backend.hororok.ugeubi.taking.controller.TakingController;
 import duksung.backend.hororok.ugeubi.taking.domain.entity.TakingInfoDay;
@@ -66,6 +67,21 @@ public class AndroidPushPeriodicNotifications {
         System.out.println(body.toString());
 
         //알람 정보 저장 registerNotifications
+
+        todayTakingUserList.forEach(userId -> {
+            List<TakingInfoDay> takingInfoDayList = takingInfoDayRepository.findAllByUserId(userId);
+            takingInfoDayList.forEach(takingInfoDay -> {
+                NotificationSaveRequestDTO notificationSaveRequestDTO =
+                        NotificationSaveRequestDTO.builder()
+                        .userId(userId)
+                        .medicineId(takingInfoDay.getMedicineId())
+                        .medicineName(takingInfoDay.getMedicineName())
+                        //.notificationDate()
+                        .notificationTime(takingInfoDay.getTakingTime())
+                        //.notificationType(NotificationType.TAKING_TIME)
+                        .build();
+            });
+        });
 
         return body.toString();
     }

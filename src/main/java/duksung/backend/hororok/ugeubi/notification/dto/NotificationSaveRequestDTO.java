@@ -13,34 +13,35 @@ import java.util.Date;
 @NoArgsConstructor
 public class NotificationSaveRequestDTO {
 
-    private Long notification_id;
-    private Long user_id;
-    private Long medicine_id;
-    private String medicine_name;
-    private String notification_date; //알람 날짜
-    private String notification_time; //-> null값 허용(유효기간인 경우)
-    private Notification.Notification_type notification_type;
+    private Long userId;
+    private Long medicineId;
+    private String medicineName;
+    private String notificationDate; //알람 날짜
+    private String notificationTime; //-> null값 허용(유효기간인 경우)
+    //private NotificationType notificationType;
 
     @Builder
-    private NotificationSaveRequestDTO(Long medicine_id, Long user_id, String medicine_name, String notification_date, String notification_time, Notification.Notification_type notification_type) {
-        this.medicine_id=medicine_id;
-        this.user_id=user_id;
-        this.medicine_name=medicine_name;
-        this.notification_date=notification_date;
-        this.notification_time=notification_time;
-        this.notification_type=notification_type;
+    private NotificationSaveRequestDTO(Long userId, Long medicineId,
+                                       String medicineName, String notificationDate,
+                                       String notificationTime//, NotificationType notificationType
+    ) {
+        this.userId=userId;
+        this.medicineId=medicineId;
+        this.medicineName=medicineName;
+        this.notificationDate=notificationDate;
+        this.notificationTime=notificationTime;
+        this.notificationDate=notificationDate;
+        //this.notificationType=notificationType;
     }
-
 
     public Notification toEntity() {
         return Notification.builder()
-                .medicine_id(medicine_id)
-                .user_id(user_id)
-                .medicine_name(medicine_name)
-                .notification_date(notification_date)
-                .notification_time(notification_time)
-                .notification_type(notification_type)
+                .medicineId(medicineId)
+                .userId(userId)
+                .medicineName(medicineName)
+                .notificationDate(notificationDate)
+                .notificationTime(notificationTime)
+                //.notificationType(notificationType)
                 .build();
-
     }
 }
