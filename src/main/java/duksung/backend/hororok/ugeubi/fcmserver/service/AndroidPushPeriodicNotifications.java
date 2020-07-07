@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -33,7 +35,7 @@ public class AndroidPushPeriodicNotifications {
     private final DeviceTokenRepository deviceTokenRepository;
     private final NotificationRepository notificationRepository;
 
-    public String PeriodicNotificationJson() throws JSONException {
+    public String PeriodicNotificationJson() throws JSONException, UnsupportedEncodingException {
 
         LocalDate localDate = LocalDate.now();
 
@@ -54,8 +56,11 @@ public class AndroidPushPeriodicNotifications {
         //알람을 받을 토큰 리스트
         List<String> tokenList = deviceTokenRepository.findTokenByUserId(todayTakingUserList);
 
-        JSONObject body = new JSONObject();
+        if(tokenList.size()<=0){
+            return null;
+        }
 
+        JSONObject body = new JSONObject();
         JSONArray array = new JSONArray();
 
         for(int i=0; i<tokenList.size(); i++) {
@@ -66,8 +71,11 @@ public class AndroidPushPeriodicNotifications {
 
         //알람 보낼 내용
         JSONObject notification = new JSONObject();
-        notification.put("title","복용약 알림");
-        notification.put("body","약 먹을 시간입니다.");
+        String title   = URLEncoder.encode("복용약 알림"  ,"UTF-8"); // 한글깨짐으로 URL인코딩해서 보냄
+        String content = URLEncoder.encode("약 먹을 시간입니다.","UTF-8");
+
+        notification.put("title", title);
+        notification.put("body", content);
 
         body.put("notification", notification);
 
@@ -93,27 +101,23 @@ public class AndroidPushPeriodicNotifications {
         return body.toString();
     }
 
-    public String validTermNotificationJson() throws JSONException, ParseException {
+    public String validTermNotificationJson() throws JSONException, ParseException, UnsupportedEncodingException {
 
         SimpleDateFormat df = new SimpleDateFormat ( "yyyy-MM-dd");
         Calendar date = Calendar.getInstance();
         String medicineValidTerm = df.format(date.getTime());
 
-        //String to Date 변환
-        SimpleDateFormat fDate = new SimpleDateFormat("yyyy-MM-dd"); //같은 형식으로 맞춰줌
-        Date medicineValidTermDate = fDate.parse(medicineValidTerm);
-
-       // System.out.println("medicineValidTermDate+++++++"+medicineValidTermDate);
         //현재 날짜를 고려해서 알람 받아야 할 유저 정보를 가져옴
         List<Long> todayUserList = medicineRepository.findUserIdValidTerm(medicineValidTerm);
-      //  System.out.println("todayUserList+++++++"+todayUserList.get(0));
 
         //알람을 받을 토큰 리스트
         List<String> tokenList = deviceTokenRepository.findTokenByUserId(todayUserList);
-       // System.out.println("tokenList+++++++"+tokenList.get(0));
+
+        if(tokenList.size()<=0){
+            return null;
+        }
 
         JSONObject body = new JSONObject();
-
         JSONArray array = new JSONArray();
 
         for(int i=0; i<tokenList.size(); i++) {
@@ -124,8 +128,11 @@ public class AndroidPushPeriodicNotifications {
 
         //알람 보낼 내용
         JSONObject notification = new JSONObject();
-        notification.put("title","유효기간 약 알림");
-        notification.put("body","약의 유효기간을 확인하세요!");
+        String title   = URLEncoder.encode("유효기간 약 알림"  ,"UTF-8"); // 한글깨짐으로 URL인코딩해서 보냄
+        String content = URLEncoder.encode("약의 유효기간을 확인하세요!","UTF-8");
+
+        notification.put("title", title);
+        notification.put("body", content);
 
         body.put("notification", notification);
 

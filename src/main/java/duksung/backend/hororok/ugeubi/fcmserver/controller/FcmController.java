@@ -1,5 +1,6 @@
 package duksung.backend.hororok.ugeubi.fcmserver.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -45,9 +46,12 @@ public class FcmController {
     //복용약 정보 체크해서 알림
     @Scheduled(cron="0 * * * * *") //매 1분마다 수행 (하루에 1440회)
     @GetMapping(value = "/takingInfoSend")
-    public @ResponseBody ResponseEntity<String> sendTakingInfo() throws JSONException, InterruptedException  {
+    public @ResponseBody ResponseEntity<String> sendTakingInfo() throws JSONException, InterruptedException, UnsupportedEncodingException {
 
         String notifications = androidPushPeriodNotifications.PeriodicNotificationJson();
+        if(notifications == null){
+            return new ResponseEntity<>("No Push Notification!", HttpStatus.NO_CONTENT);
+        }
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 
@@ -73,10 +77,12 @@ public class FcmController {
     @Scheduled(cron="0 0 10 * * *") //매일 10시 실행
     @GetMapping(value = "/validTermSend")
     @JsonIgnore
-    public @ResponseBody ResponseEntity<String> sendValidTerm() throws JSONException, InterruptedException, ParseException {
+    public @ResponseBody ResponseEntity<String> sendValidTerm() throws JSONException, InterruptedException, ParseException, UnsupportedEncodingException {
 
         String notifications = androidPushPeriodNotifications.validTermNotificationJson();
-
+        if(notifications == null){
+            return new ResponseEntity<>("No Push Notification!", HttpStatus.NO_CONTENT);
+        }
         HttpEntity<String> request = new HttpEntity<>(notifications);
 
         CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
