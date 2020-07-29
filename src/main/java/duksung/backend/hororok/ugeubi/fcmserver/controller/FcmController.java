@@ -50,6 +50,7 @@ public class FcmController {
 
         String notifications = androidPushPeriodNotifications.PeriodicNotificationJson();
         if(notifications == null){
+            logger.info("No Push Notification!");
             return new ResponseEntity<>("No Push Notification!", HttpStatus.NO_CONTENT);
         }
 
@@ -60,6 +61,8 @@ public class FcmController {
 
         try{
             String firebaseResponse = pushNotification.get();
+            logger.info("got firebaseResponse!"+firebaseResponse);
+            System.out.println("got firebaseResponse!"+firebaseResponse);
             return new ResponseEntity<>(firebaseResponse, HttpStatus.OK);
         }
         catch (InterruptedException e){
